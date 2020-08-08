@@ -32,7 +32,13 @@ function setPlayField(fieldSize, bombNumber) {
 
     // Gera 10 bombas
     for (let i = 0 ; i < bombNumber ; i++) {
-        cellMatrix[getRandomCell(fieldSize)][getRandomCell(fieldSize)] = -1;
+        let randomRow = getRandomCell(fieldSize);
+        let randomColumn = getRandomCell(fieldSize);
+        while (cellMatrix[randomRow][randomColumn] == -1) {
+            randomRow = getRandomCell(fieldSize);
+            randomColumn = getRandomCell(fieldSize);
+        }
+        cellMatrix[randomRow][randomColumn] = -1;
     }
 
     // Renderiza campo
