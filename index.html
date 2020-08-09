@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minesweepercraft</title>
+    <title>minejsweeper</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nova+Round" rel="stylesheet"> 
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="#" />
 </head>
 <body>
+    <button id="button-minus">-</button>
+    <button id="button-plus">+</button>
     <form id="form-config" class="mb-2">
-        <input type="text" id="inputtext-field-size" value="9" />
-        <input type="text" id="inputtext-bomb-number" value="10" />
+        <label for="inputtext-rows"># of rows</label>
+        <input type="text" id="inputtext-rows" value="9" />
+        <label for="inputtext-columns"># of columns</label>
+        <input type="text" id="inputtext-columns" value="9" />
+        <label for="inputtext-bombs"># of bombs</label>
+        <input type="text" id="inputtext-bombs" value="10" />
         <input type="submit" value="Play" />
     </form>
 

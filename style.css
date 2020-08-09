@@ -1,32 +1,44 @@
+:root {
+    --cell-bg-color: rgb(163, 192, 183);
+    --cell-border-light-color: rgb(231, 224, 208);
+    --cell-border-dark-color: rgb(58, 38, 83);
+    --cell-undiscovered-border-light-color: rgb(216, 211, 198);
+    --cell-undiscovered-border-dark-color: rgb(117, 92, 148);
+}
+
 button:focus {
-    outline:none;
+    outline: none;
 }
 
 .cell {
-    background-color: rgb(192, 192, 192);
-    border-width: 2px;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-top-color: rgb(146, 146, 146);
-    border-left-color: rgb(146, 146, 146);
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    background-color: var(--cell-bg-color);
+    font-weight: bold;
+    font-size: xx-large;
+    border-width: 3px;
+    border-style: solid;
+    border-color: var(--cell-border-dark-color) transparent transparent var(--cell-border-dark-color);
 }
 
 .cell-undiscovered {
-    background-color: rgb(192, 192, 192);
-    padding: 0;
-    width: 2.5rem;
-    height: 2.5rem;
+    background-color: var(--cell-bg-color);
+    width: var(--cell-size);
+    height: var(--cell-size);
     border-width: 6px;
-    border-top-color: rgb(226, 226, 226);
-    border-left-color: rgb(226, 226, 226);
-    border-right-color: rgb(146, 146, 146);
-    border-bottom-color: rgb(146, 146, 146);
+    border-top-color: var(--cell-undiscovered-border-light-color);
+    border-left-color: var(--cell-undiscovered-border-light-color);
+    border-right-color: var(--cell-undiscovered-border-dark-color);
+    border-bottom-color: var(--cell-undiscovered-border-dark-color);
 }
 
 .cell-undiscovered:active {
-    background-color: rgb(175, 175, 175);
-    border-top-color: rgb(146, 146, 146);
-    border-left-color: rgb(146, 146, 146);
-    border-right-color: rgb(226, 226, 226);
-    border-bottom-color: rgb(226, 226, 226);
+    border-top-color: var(--cell-undiscovered-border-dark-color);
+    border-left-color: var(--cell-undiscovered-border-dark-color);
+    border-right-color: var(--cell-undiscovered-border-light-color);
+    border-bottom-color: var(--cell-undiscovered-border-light-color);
 }
