@@ -1,14 +1,6 @@
 // Globals
-var cellSize = 50;
-
-// Game state    
-const cellMatrix = [];
-let openCells = 0;
-let numberOfRows = 0;
-let numberOfColumns = 0;
-let numberOfBombs = 0;
-
-const ColorMapping = {
+let fieldScale = 1;
+const CellColorMapping = {
     1: 'steelblue',
     2: 'seagreen',
     3: 'mediumvioletred',
@@ -18,6 +10,14 @@ const ColorMapping = {
     7: 'black',
     8: 'white'
 }
+
+// Game state    
+const cellMatrix = [];
+let openCells = 0;
+let numberOfRows = 0;
+let numberOfColumns = 0;
+let numberOfBombs = 0;
+
 
 // Element definitions
 const root = document.documentElement;
@@ -33,22 +33,18 @@ const inputTextBombs = document.getElementById("inputtext-bombs");
 const divField = document.getElementById("div-field");
 
 // Event binders
-window.onload = function() {
-    root.style.setProperty('--cell-size', `${cellSize}px`);
-}
-
 divField.addEventListener('contextmenu', function(e) {
     e.preventDefault();
-}, true);   
+}, true);
 
 buttonMinus.addEventListener('click', function() {
-    cellSize = (cellSize <= 30) ? cellSize : cellSize -= 5;
-    root.style.setProperty('--cell-size', `${cellSize}px`);
+    fieldScale -= 0.1;
+    divField.style.setProperty('transform', `scale(${fieldScale})`);
 });
 
 buttonPlus.addEventListener('click', function() {
-    cellSize = (cellSize >= 100) ? cellSize : cellSize += 5;
-    root.style.setProperty('--cell-size', `${cellSize}px`);
+    fieldScale += 0.1;
+    divField.style.setProperty('transform', `scale(${fieldScale})`);
 });
 
 formConfig.addEventListener('submit', function() {
@@ -75,20 +71,21 @@ function openAllCells() {
         for (let j = 0 ; j < numberOfColumns ; j++) {
             thisCell = getCellByCoordinate(i, j);
             thisCell.classList.remove("fa", "fa-flag");
+            thisCell.style.setProperty('pointer-events','none');
             const cellType = getCellType(i, j);
-            thisCell.disabled = true;
             if (cellType == -1) {
                 thisCell.style.setProperty("font-size", "1.5rem");
                 thisCell.innerHTML = '<i class="fa fa-bomb"></i>';
             } else {
-                thisCell.disabled = true;
+                thisCell.style.setProperty("font-size", "xx-large");
                 thisCell.classList.remove("cell-undiscovered");
                 if (cellType != 0) {
                     thisCell.style.setProperty('font-family', `'Nova Round', cursive`);
                     thisCell.innerText = cellType;
-                    thisCell.style.setProperty("color", ColorMapping[cellType]);
+                    thisCell.style.setProperty("color", CellColorMapping[cellType]);
                 }
             }
+            thisCell.classList.add("opened");
         }
     }
 }
@@ -119,8 +116,9 @@ function getCellType(i, j) {
 function flagCell(i, j) {
     thisCell = getCellByCoordinate(i, j);
     if (!thisCell.classList.contains('opened')) {
-        thisCell.classList.toggle("fa")
-        thisCell.classList.toggle("fa-flag");
+        thisCell.classList.toggle('fa')
+        thisCell.classList.toggle('fa-flag');
+        thisCell.style.setProperty("font-size", "1.5rem");
     }
 }
 
@@ -129,12 +127,14 @@ function openCell(i, j) {
     thisCell.classList.remove("fa", "fa-flag");
     const cellType = getCellType(i, j);
     if (cellType == -1) {
+        thisCell.classList.add("opened");
         thisCell.style.setProperty("font-size", "1.5rem");
         thisCell.innerHTML = '<i class="fa fa-bomb"></i>';
         endGame('lost');
     } else if (!thisCell.classList.contains("opened")){
         thisCell.classList.add("opened");
         openCells++;
+        thisCell.style.setProperty("font-size", "xx-large");
         thisCell.classList.remove("cell-undiscovered");
         if (cellType == 0) {
             for (cell of getAdjacentCells(i, j)) {
@@ -143,7 +143,7 @@ function openCell(i, j) {
         } else if (cellType != 0) {
             thisCell.style.setProperty('font-family', `'Nova Round', cursive`);
             thisCell.innerText = cellType;
-            thisCell.style.setProperty("color", ColorMapping[cellType]);
+            thisCell.style.setProperty("color", CellColorMapping[cellType]);
         }
     }
     

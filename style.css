@@ -4,10 +4,16 @@
     --cell-border-dark-color: rgb(58, 38, 83);
     --cell-undiscovered-border-light-color: rgb(216, 211, 198);
     --cell-undiscovered-border-dark-color: rgb(117, 92, 148);
+    --cell-size: 50px;
 }
 
 button:focus {
     outline: none;
+}
+
+#div-field {
+    cursor:pointer;
+    transform-origin: top;
 }
 
 .cell {
