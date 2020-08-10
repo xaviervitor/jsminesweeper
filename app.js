@@ -33,13 +33,15 @@ const Difficulties = {
         bombs: 99
     }
 }
-
-// Game state    
-var cellMatrix;
-var openCells = 0;
-var numberOfRows = 0;
-var numberOfColumns = 0;
-var numberOfBombs = 0;
+  
+var GameState = {
+    cellMatrix: 0,
+    numberOfRows: 0,
+    numberOfColumns: 0,
+    numberOfBombs: 0,
+    openCells: 0,
+    over: false
+} 
 
 // Element definitions
 const root = document.documentElement;
@@ -104,32 +106,30 @@ function changeDifficulty(radioButton) {
 
 function getAdjacentCells(i, j) {
     let cells = [];
-    try {if (cellMatrix[i + 0][j + 1] != undefined) cells.push({i: i + 0, j: j + 1});} catch (TypeError) {}
-    try {if (cellMatrix[i + 1][j + 1] != undefined) cells.push({i: i + 1, j: j + 1});} catch (TypeError) {}
-    try {if (cellMatrix[i + 1][j + 0] != undefined) cells.push({i: i + 1, j: j + 0});} catch (TypeError) {}
-    try {if (cellMatrix[i + 1][j - 1] != undefined) cells.push({i: i + 1, j: j - 1});} catch (TypeError) {}
-    try {if (cellMatrix[i + 0][j - 1] != undefined) cells.push({i: i + 0, j: j - 1});} catch (TypeError) {}
-    try {if (cellMatrix[i - 1][j - 1] != undefined) cells.push({i: i - 1, j: j - 1});} catch (TypeError) {}
-    try {if (cellMatrix[i - 1][j + 0] != undefined) cells.push({i: i - 1, j: j + 0});} catch (TypeError) {}
-    try {if (cellMatrix[i - 1][j + 1] != undefined) cells.push({i: i - 1, j: j + 1});} catch (TypeError) {}
+    try {if (GameState.cellMatrix[i + 0][j + 1] != undefined) cells.push({i: i + 0, j: j + 1});} catch (TypeError) {}
+    try {if (GameState.cellMatrix[i + 1][j + 1] != undefined) cells.push({i: i + 1, j: j + 1});} catch (TypeError) {}
+    try {if (GameState.cellMatrix[i + 1][j + 0] != undefined) cells.push({i: i + 1, j: j + 0});} catch (TypeError) {}
+    try {if (GameState.cellMatrix[i + 1][j - 1] != undefined) cells.push({i: i + 1, j: j - 1});} catch (TypeError) {}
+    try {if (GameState.cellMatrix[i + 0][j - 1] != undefined) cells.push({i: i + 0, j: j - 1});} catch (TypeError) {}
+    try {if (GameState.cellMatrix[i - 1][j - 1] != undefined) cells.push({i: i - 1, j: j - 1});} catch (TypeError) {}
+    try {if (GameState.cellMatrix[i - 1][j + 0] != undefined) cells.push({i: i - 1, j: j + 0});} catch (TypeError) {}
+    try {if (GameState.cellMatrix[i - 1][j + 1] != undefined) cells.push({i: i - 1, j: j + 1});} catch (TypeError) {}
     return cells;
 }
 
 function openAllCells() {
-    for (let i = 0 ; i < numberOfRows ; i++) {
-        for (let j = 0 ; j < numberOfColumns ; j++) {
+    for (let i = 0 ; i < GameState.numberOfRows ; i++) {
+        for (let j = 0 ; j < GameState.numberOfColumns ; j++) {
             thisCell = getCellByCoordinate(i, j);
             thisCell.classList.remove("fa", "fa-flag");
-            thisCell.style.setProperty('pointer-events','none');
             const cellType = getCellType(i, j);
             if (cellType == -1) {
-                thisCell.style.setProperty("font-size", "1.5rem");
+                thisCell.classList.add("cell-bomb");;
                 thisCell.innerHTML = '<i class="fa fa-bomb"></i>';
             } else {
-                thisCell.style.setProperty("font-size", "xx-large");
                 thisCell.classList.remove("cell-undiscovered");
                 if (cellType != 0) {
-                    thisCell.style.setProperty('font-family', `'Nova Round', cursive`);
+                    thisCell.classList.add("cell-number");
                     thisCell.innerText = cellType;
                     thisCell.style.setProperty("color", CellColorMapping[cellType]);
                 }
@@ -140,23 +140,27 @@ function openAllCells() {
 }
 
 function startGame(rows, columns, bombs) {
-    numberOfRows = rows;
-    numberOfColumns = columns;
-    numberOfBombs = bombs;
-    openCells = 0;
+    GameState.numberOfRows = rows;
+    GameState.numberOfColumns = columns;
+    GameState.numberOfBombs = bombs;
+    GameState.openCells = 0;
+    GameState.over = false;
     setPlayField(rows, columns, bombs);
 }
 
 function endGame(wonOrLost) {
-    openAllCells();
-    alert(wonOrLost + '!');
+    if (!GameState.over) {
+        openAllCells();
+        showModal(wonOrLost + '!');
+        GameState.over = true;
+    }
 }
 
 function getCellType(i, j) {
-    if (cellMatrix[i][j] == -1) return -1;
+    if (GameState.cellMatrix[i][j] == -1) return -1;
     let bombCounter = 0;
     for (cell of getAdjacentCells(i, j)) {
-        if (cellMatrix[cell.i][cell.j] == -1)
+        if (GameState.cellMatrix[cell.i][cell.j] == -1)
             bombCounter++;
     }
     return bombCounter;
@@ -167,7 +171,7 @@ function flagCell(i, j) {
     if (!thisCell.classList.contains('opened')) {
         thisCell.classList.toggle('fa')
         thisCell.classList.toggle('fa-flag');
-        thisCell.style.setProperty("font-size", "1.5rem");
+        thisCell.classList.toggle('cell-flag');
     }
 }
 
@@ -176,27 +180,25 @@ function openCell(i, j) {
     thisCell.classList.remove("fa", "fa-flag");
     const cellType = getCellType(i, j);
     if (cellType == -1) {
-        thisCell.classList.add("opened");
-        thisCell.style.setProperty("font-size", "1.5rem");
+        thisCell.classList.add("opened", "cell-bomb");;
         thisCell.innerHTML = '<i class="fa fa-bomb"></i>';
         endGame('lost');
     } else if (!thisCell.classList.contains("opened")){
-        thisCell.classList.add("opened");
-        openCells++;
-        thisCell.style.setProperty("font-size", "xx-large");
+        GameState.openCells++;
         thisCell.classList.remove("cell-undiscovered");
+        thisCell.classList.add("opened");
         if (cellType == 0) {
             for (cell of getAdjacentCells(i, j)) {
                 openCell(cell.i, cell.j);
             }
         } else if (cellType != 0) {
-            thisCell.style.setProperty('font-family', `'Nova Round', cursive`);
+            thisCell.classList.add("cell-number");
             thisCell.innerText = cellType;
             thisCell.style.setProperty("color", CellColorMapping[cellType]);
         }
     }
     
-    if (openCells == numberOfRows * numberOfColumns - numberOfBombs) {
+    if (GameState.openCells == GameState.numberOfRows * GameState.numberOfColumns - GameState.numberOfBombs) {
         endGame('won');
     }
 }
@@ -214,17 +216,17 @@ function setPlayField(rows, columns, bombs) {
         return;
     }
 
-    cellMatrix = Array.matrix(rows, columns, 0);
+    GameState.cellMatrix = Array.matrix(rows, columns, 0);
 
     // Generate bombs
     for (let i = 0 ; i < bombs ; i++) {
         let randomRow = getRandom(rows);
         let randomColumn = getRandom(columns);
-        while (cellMatrix[randomRow][randomColumn] == -1) {
+        while (GameState.cellMatrix[randomRow][randomColumn] == -1) {
             randomRow = getRandom(rows);
             randomColumn = getRandom(columns);
         }
-        cellMatrix[randomRow][randomColumn] = -1;
+        GameState.cellMatrix[randomRow][randomColumn] = -1;
     }
 
     // Renders field

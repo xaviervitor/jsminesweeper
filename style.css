@@ -7,7 +7,7 @@ button:focus {
 :root {
     --cell-bg-color: rgb(163, 192, 183);
     --cell-border-light-color: rgb(231, 224, 208);
-    --cell-border-dark-color: var(--button-pressed-color);
+    --cell-border-dark-color: rgb(58, 38, 83);
     --cell-undiscovered-border-light-color: rgb(216, 211, 198);
     --cell-undiscovered-border-dark-color: rgb(117, 92, 148);
     --cell-size: 50px;
@@ -27,11 +27,23 @@ button:focus {
 
 /* Global styles */
 body {
-    background-color: var(--button-outline-color);
+    background-color: #ac1b80;
     font-family: 'Nova Round', cursive;
 }
 
-/* */
+/* Elements */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#box {
+    background-color: white;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
 #form-field {
     display: flex;
     flex-flow: column wrap;
@@ -85,7 +97,7 @@ body {
 }
 
 #div-field {
-    cursor:pointer;
+    cursor: pointer;
     transform-origin: top;
     transition: all .25s ease;
 }
@@ -98,11 +110,24 @@ body {
     width: var(--cell-size);
     height: var(--cell-size);
     background-color: var(--cell-bg-color);
-    font-weight: bold;
-    font-size: xx-large;
     border-width: 3px;
     border-style: solid;
     border-color: var(--cell-border-dark-color) transparent transparent var(--cell-border-dark-color);
+}
+
+.cell-number {
+    font-family: 'Times New Roman';
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.cell-bomb {
+    font-size: 1.5rem;
+    pointer-events: none;
+}
+
+.cell-flag {
+    font-size: 1.5rem;
 }
 
 .cell-undiscovered {

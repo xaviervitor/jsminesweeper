@@ -11,49 +11,53 @@
     <link rel="shortcut icon" href="#" />
 </head>
 <body>
-    <div class="d-flex flex-column justify-content-center align-items-center">
-        <h1>Minejsweeper!</h1>
-        <form id="form-config" class="mb-2 d-flex justify-content-center flex-column">
-            <div class="d-flex flex-row">
-                <label class="mr-2">
-                    <input type="radio" name="difficulty" value="beginner" onclick="changeDifficulty(this)" checked />
-                    Beginner
-                </label>
-                <label class="mr-2">
-                    <input type="radio" name="difficulty" value="intermediate" onclick="changeDifficulty(this)" />
-                    Intermediate
-                </label>
-                <label class="mr-2">
-                    <input type="radio" name="difficulty" value="expert" onclick="changeDifficulty(this)" />
-                    Expert
-                </label>
-                <label class="mr-2">
-                    <input type="radio" name="difficulty" value="custom" onclick="changeDifficulty(this)" />
-                    Custom
-                </label>
+    <div class="container">
+        <div class="box d-flex flex-column justify-content-center align-items-center">
+            <h1>Minejsweeper!</h1>
+            <form id="form-config" class="mb-2 d-flex justify-content-center flex-column">
+                <div class="d-flex flex-row">
+                    <label class="mr-2">
+                        <input type="radio" name="difficulty" value="beginner" onclick="changeDifficulty(this)" checked />
+                        Beginner
+                    </label>
+                    <label class="mr-2">
+                        <input type="radio" name="difficulty" value="intermediate" onclick="changeDifficulty(this)" />
+                        Intermediate
+                    </label>
+                    <label class="mr-2">
+                        <input type="radio" name="difficulty" value="expert" onclick="changeDifficulty(this)" />
+                        Expert
+                    </label>
+                    <label class="mr-2">
+                        <input type="radio" name="difficulty" value="custom" onclick="changeDifficulty(this)" />
+                        Custom
+                    </label>
+                </div>
+                <div id="div-custom-config" class="d-none">
+                    <div class="d-flex justify-content-start align-items-baseline">
+                        <label class="mr-2 w-30" for="inputtext-rows"># of rows</label>
+                        <input class="w-70 d-flex justify-content-end flex-grow-1" type="text" id="inputtext-rows" value="9" />
+                    </div>
+                    <div class="d-flex justify-content-start align-items-baseline">
+                        <label class="mr-2 w-30" for="inputtext-columns"># of columns</label>
+                        <input class="w-70 d-flex justify-content-end flex-grow-1" type="text" id="inputtext-columns" value="9" />
+                    </div>
+                    <div class="d-flex justify-content-start align-items-baseline">
+                        <label class="mr-2 w-30" for="inputtext-bombs"># of bombs</label>
+                        <input class="w-70 d-flex justify-content-end flex-grow-1" type="text" id="inputtext-bombs" value="10" />
+                    </div>
+                </div>
+                <input id="button-play" type="submit" class="form-button" value="Play" />
+            </form>
+            
+            <div id="div-game">
+                <div class="d-none mb-2">
+                    <button id="button-minus">-</button>
+                    <button id="button-plus">+</button>
+                </div>
+                <div id="div-field"></div>
             </div>
-            <div id="div-custom-config" class="d-none">
-                <div class="d-flex justify-content-start align-items-baseline">
-                    <label class="mr-2 w-30" for="inputtext-rows"># of rows</label>
-                    <input class="w-70 d-flex justify-content-end flex-grow-1" type="text" id="inputtext-rows" value="9" />
-                </div>
-                <div class="d-flex justify-content-start align-items-baseline">
-                    <label class="mr-2 w-30" for="inputtext-columns"># of columns</label>
-                    <input class="w-70 d-flex justify-content-end flex-grow-1" type="text" id="inputtext-columns" value="9" />
-                </div>
-                <div class="d-flex justify-content-start align-items-baseline">
-                    <label class="mr-2 w-30" for="inputtext-bombs"># of bombs</label>
-                    <input class="w-70 d-flex justify-content-end flex-grow-1" type="text" id="inputtext-bombs" value="10" />
-                </div>
-            </div>
-            <input id="button-play" type="submit" class="form-button" value="Play" />
-        </form>
-        
-        <div class="mb-2">
-            <button id="button-minus">-</button>
-            <button id="button-plus">+</button>
         </div>
-        <div id="div-field"></div>
     </div>
     <script src="app.js"></script>
     <script src="matrix.js"></script> 
