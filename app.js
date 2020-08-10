@@ -1,5 +1,5 @@
 // Globals
-let fieldScale = 1;
+var fieldScale = 1;
 const CellColorMapping = {
     1: 'steelblue',
     2: 'seagreen',
@@ -10,14 +10,19 @@ const CellColorMapping = {
     7: 'black',
     8: 'white'
 }
+const Difficulties = {
+    custom: 'custom',
+    beginner: 'beginner',
+    intermediate: 'intermediate',
+    expert: 'expert'
+}
 
 // Game state    
-const cellMatrix = [];
-let openCells = 0;
-let numberOfRows = 0;
-let numberOfColumns = 0;
-let numberOfBombs = 0;
-
+var cellMatrix;
+var openCells = 0;
+var numberOfRows = 0;
+var numberOfColumns = 0;
+var numberOfBombs = 0;
 
 // Element definitions
 const root = document.documentElement;
@@ -29,30 +34,73 @@ const formConfig = document.getElementById("form-config");
 const inputTextRows = document.getElementById("inputtext-rows");
 const inputTextColumns = document.getElementById("inputtext-columns");
 const inputTextBombs = document.getElementById("inputtext-bombs");
+const buttonPlay = document.getElementById("button-play");
 
 const divField = document.getElementById("div-field");
+const divCustomConfig = document.getElementById("div-custom-config");
 
 // Event binders
+window.onload = function() {
+    setFieldScale(0.5);
+}
+
 divField.addEventListener('contextmenu', function(e) {
     e.preventDefault();
 }, true);
 
 buttonMinus.addEventListener('click', function() {
-    fieldScale -= 0.1;
-    divField.style.setProperty('transform', `scale(${fieldScale})`);
+    setFieldScale(fieldScale * 0.9);
 });
 
 buttonPlus.addEventListener('click', function() {
-    fieldScale += 0.1;
-    divField.style.setProperty('transform', `scale(${fieldScale})`);
+    setFieldScale(fieldScale * 1.1);
 });
 
 formConfig.addEventListener('submit', function() {
     event.preventDefault();
-    startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
+    buttonPlay.addEventListener("animationend", function () {
+        // Removes focus so that the next click animation plays
+        buttonPlay.blur();
+        startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
+    }); 
 });
 
 // Functions
+function setFieldScale(newScale) {
+    fieldScale = newScale;
+    divField.style.setProperty('transform', `scale(${fieldScale})`);
+}
+
+function changeDifficulty(radioButton) {
+    switch (radioButton.value) {
+        case Difficulties.beginner:
+            inputTextRows.value = '9';
+            inputTextColumns.value ='9';
+            inputTextBombs.value ='10';
+            divCustomConfig.classList.remove('d-block');
+            divCustomConfig.classList.add('d-none');
+            break;
+        case Difficulties.intermediate:
+            inputTextRows.value ='16';
+            inputTextColumns.value ='16';
+            inputTextBombs.value ='40';
+            divCustomConfig.classList.remove('d-block');
+            divCustomConfig.classList.add('d-none');
+            break;
+        case Difficulties.expert:
+            inputTextRows.value = '16';
+            inputTextColumns.value = '30';
+            inputTextBombs.value = '99';
+            divCustomConfig.classList.remove('d-block');
+            divCustomConfig.classList.add('d-none');
+            break;
+        case Difficulties.custom:
+            divCustomConfig.classList.toggle('d-none');
+            divCustomConfig.classList.toggle('d-block');
+            break;
+    }
+}
+
 function getAdjacentCells(i, j) {
     let cells = [];
     try {if (cellMatrix[i + 0][j + 1] != undefined) cells.push({i: i + 0, j: j + 1});} catch (TypeError) {}
@@ -161,16 +209,11 @@ function getCellByCoordinate(i ,j) {
 }
 
 function setPlayField(rows, columns, bombs) {
-    if (!(rows && columns))
+    if (!(rows && columns && bombs)) {
         return;
-
-    // Creates clear field
-    for (let i = 0 ; i < rows ; i++) {
-        cellMatrix[i] = [];
-        for (let j = 0 ; j < columns ; j++) {
-            cellMatrix[i][j] = 0;
-        }
     }
+
+    cellMatrix = Array.matrix(rows, columns, 0);
 
     // Generate bombs
     for (let i = 0 ; i < bombs ; i++) {
@@ -192,14 +235,10 @@ function setPlayField(rows, columns, bombs) {
             let cell = document.createElement('span');
             cell.id = `cell-${i}-${j}`;
             cell.classList.add('cell', 'cell-undiscovered');
-            cell.oncontextmenu = function(event) {
-                event.preventDefault();
-                return false;
-            };
             cell.addEventListener('mouseup', function(event){
-                if (event.button == 0 && !getCellByCoordinate(i ,j).classList.contains('fa-flag'))
+                if (event.button == 0 && !getCellByCoordinate(i, j).classList.contains('fa-flag'))
                     openCell(i, j);
-                if (event.button == 2)
+                else if (event.button == 2)
                     flagCell(i, j);
             });
             divRow.appendChild(cell);

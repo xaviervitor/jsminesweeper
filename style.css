@@ -1,19 +1,93 @@
+/* Browser overrides */
+button:focus {
+    outline: none !important;
+}
+
+/* Variables */
 :root {
     --cell-bg-color: rgb(163, 192, 183);
     --cell-border-light-color: rgb(231, 224, 208);
-    --cell-border-dark-color: rgb(58, 38, 83);
+    --cell-border-dark-color: var(--button-pressed-color);
     --cell-undiscovered-border-light-color: rgb(216, 211, 198);
     --cell-undiscovered-border-dark-color: rgb(117, 92, 148);
     --cell-size: 50px;
+    --button-main-color: rgb(33, 11, 59);
+    --button-pressed-color: rgb(58, 38, 83);
+    --button-outline-color: rgba(110, 85, 141, 0.5);
 }
 
-button:focus {
-    outline: none;
+/* Bootstrap extensions */
+.w-30 {
+    width: 30%;
+}
+
+.w-70 {
+    width: 70%;
+}
+
+/* Global styles */
+body {
+    background-color: var(--button-outline-color);
+    font-family: 'Nova Round', cursive;
+}
+
+/* */
+#form-field {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+}
+
+.form-button {
+    padding: 0.5rem 2rem 0.5rem 2rem;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-self: center;
+    color: white;
+    border-radius: 7px;
+    border: 0 solid transparent;
+    background-color: var(--button-main-color);
+}
+
+.form-button:hover {
+    animation: button-hover .5s ease infinite alternate;
+}
+
+.form-button:focus {
+    animation: button-click 1s ease;
+}
+
+@keyframes button-hover {
+    from {
+        background-color: var(--button-main-color);
+        box-shadow: 0 0 0 0 transparent;
+    }
+    to {
+        background-color: var(--button-pressed-color);
+        box-shadow: 0 0 0 4px var(--button-outline-color);
+    }
+}
+
+@keyframes button-click {
+    0% {
+        background-color: var(--button-main-color);
+        box-shadow: 0 0 0 0 transparent;
+    }
+    50% {
+        background-color: var(--button-pressed-color);
+        box-shadow: 0 0 0 4px var(--button-outline-color);
+    }
+    100% {
+        background-color: var(--button-main-color);
+        box-shadow: 0 0 0 16px transparent;
+    }
 }
 
 #div-field {
     cursor:pointer;
     transform-origin: top;
+    transition: all .25s ease;
 }
 
 .cell {
