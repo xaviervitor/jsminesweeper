@@ -11,10 +11,27 @@ const CellColorMapping = {
     8: 'white'
 }
 const Difficulties = {
-    custom: 'custom',
-    beginner: 'beginner',
-    intermediate: 'intermediate',
-    expert: 'expert'
+    custom: {
+        // Will be the last configuration played
+        rows: 16, 
+        columns: 30,
+        bombs: 99
+    },
+    beginner: {
+        rows: 9,
+        columns: 9,
+        bombs: 10
+    },
+    intermediate: {
+        rows: 16,
+        columns: 16,
+        bombs: 40
+    },
+    expert: {
+        rows: 16,
+        columns: 30,
+        bombs: 99
+    }
 }
 
 // Game state    
@@ -61,8 +78,8 @@ formConfig.addEventListener('submit', function() {
     buttonPlay.addEventListener("animationend", function () {
         // Removes focus so that the next click animation plays
         buttonPlay.blur();
-        startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     }); 
+    startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
 });
 
 // Functions
@@ -72,32 +89,16 @@ function setFieldScale(newScale) {
 }
 
 function changeDifficulty(radioButton) {
-    switch (radioButton.value) {
-        case Difficulties.beginner:
-            inputTextRows.value = '9';
-            inputTextColumns.value ='9';
-            inputTextBombs.value ='10';
-            divCustomConfig.classList.remove('d-block');
-            divCustomConfig.classList.add('d-none');
-            break;
-        case Difficulties.intermediate:
-            inputTextRows.value ='16';
-            inputTextColumns.value ='16';
-            inputTextBombs.value ='40';
-            divCustomConfig.classList.remove('d-block');
-            divCustomConfig.classList.add('d-none');
-            break;
-        case Difficulties.expert:
-            inputTextRows.value = '16';
-            inputTextColumns.value = '30';
-            inputTextBombs.value = '99';
-            divCustomConfig.classList.remove('d-block');
-            divCustomConfig.classList.add('d-none');
-            break;
-        case Difficulties.custom:
-            divCustomConfig.classList.toggle('d-none');
-            divCustomConfig.classList.toggle('d-block');
-            break;
+    inputTextRows.value = Difficulties[radioButton.value].rows;
+    inputTextColumns.value = Difficulties[radioButton.value].columns;
+    inputTextBombs.value = Difficulties[radioButton.value].bombs;
+    
+    if (radioButton.value == "custom") {
+        divCustomConfig.classList.remove('d-none');
+        divCustomConfig.classList.add('d-block');
+    } else {
+        divCustomConfig.classList.remove('d-block');
+        divCustomConfig.classList.add('d-none');
     }
 }
 
