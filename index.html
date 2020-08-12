@@ -1,67 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>minejsweeper</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Nova+Round" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nova+Round" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@900" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="#" />
 </head>
+
 <body>
-    <div class="viewport-centered">
-        <div class="box">
-            <h1>Minejsweeper!</h1>
-            <form id="form-config" class="mb-2 d-flex justify-content-center flex-column">
-                <div class="d-flex flex-row">
-                    <label class="mr-2">
-                        <input type="radio" name="difficulty" value="beginner" onclick="changeDifficulty(this)" checked />
-                        Beginner
-                    </label>
-                    <label class="mr-2">
-                        <input type="radio" name="difficulty" value="intermediate" onclick="changeDifficulty(this)" />
-                        Intermediate
-                    </label>
-                    <label class="mr-2">
-                        <input type="radio" name="difficulty" value="expert" onclick="changeDifficulty(this)" />
-                        Expert
-                    </label>
-                    <label class="mr-2">
-                        <input type="radio" name="difficulty" value="custom" onclick="changeDifficulty(this)" />
-                        Custom
-                    </label>
-                </div>
-                <div id="div-custom-config" class="d-none">
-                    <div class="d-flex justify-content-start align-items-baseline">
-                        <label class="mr-2 w-30" for="inputnumber-rows"># of rows</label>
-                        <input class="w-70 d-flex justify-content-end flex-grow-1" type="number" id="inputnumber-rows" value="9" required/>
+    <div class="viewport-absolute">
+        <div class="viewport-centered">
+            <div class="box">
+                <h1>Minejsweeper!</h1>
+                <form id="form-config" class="mb-2 d-flex justify-content-center flex-column">
+                    <div class="d-flex flex-row">
+                        <label class="mr-2">
+                            <input type="radio" name="difficulty" value="beginner" onclick="changeDifficulty(this)"
+                                checked />
+                            Beginner
+                        </label>
+                        <label class="mr-2">
+                            <input type="radio" name="difficulty" value="intermediate"
+                                onclick="changeDifficulty(this)" />
+                            Intermediate
+                        </label>
+                        <label class="mr-2">
+                            <input type="radio" name="difficulty" value="expert" onclick="changeDifficulty(this)" />
+                            Expert
+                        </label>
+                        <label class="mr-2">
+                            <input type="radio" name="difficulty" value="custom" onclick="changeDifficulty(this)" />
+                            Custom
+                        </label>
                     </div>
-                    <div class="d-flex justify-content-start align-items-baseline">
-                        <label class="mr-2 w-30" for="inputnumber-columns"># of columns</label>
-                        <input class="w-70 d-flex justify-content-end flex-grow-1" type="number" id="inputnumber-columns" value="9" required/>
+                    <div id="div-custom-config" class="d-none">
+                        <div class="d-flex justify-content-start align-items-baseline">
+                            <label class="mr-2 w-30" for="inputnumber-rows"># of rows</label>
+                            <input class="w-70 d-flex justify-content-end flex-grow-1" type="number"
+                                id="inputnumber-rows" value="9" required />
+                        </div>
+                        <div class="d-flex justify-content-start align-items-baseline">
+                            <label class="mr-2 w-30" for="inputnumber-columns"># of columns</label>
+                            <input class="w-70 d-flex justify-content-end flex-grow-1" type="number"
+                                id="inputnumber-columns" value="9" required />
+                        </div>
+                        <div class="d-flex justify-content-start align-items-baseline">
+                            <label class="mr-2 w-30" for="inputnumber-bombs"># of bombs</label>
+                            <input class="w-70 d-flex justify-content-end flex-grow-1" type="number"
+                                id="inputnumber-bombs" value="10" required />
+                        </div>
                     </div>
-                    <div class="d-flex justify-content-start align-items-baseline">
-                        <label class="mr-2 w-30" for="inputnumber-bombs"># of bombs</label>
-                        <input class="w-70 d-flex justify-content-end flex-grow-1" type="number" id="inputnumber-bombs" value="10" required/>
-                    </div>
-                </div>
-                <input id="button-play" type="submit" class="form-button" value="Play" />
-            </form>
-        </div>
-    </div>
-    <div id="div-game" class="viewport-centered d-none">
-        <div class="box game-box">
-            <div>
-                <button id="button-minus">-</button>
-                <button id="button-plus">+</button>
+                    <input id="button-play" type="submit" class="form-button" value="Play" />
+                </form>
             </div>
-            <div id="div-field"></div>
         </div>
     </div>
-    <script src="matrix.js"></script> 
+
+    <!-- <div id="div-game" class='d-none overlay'>
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    <div class="box game-box">
+                        <div>
+                            <button id="button-minus">-</button>
+                            <button id="button-plus">+</button>
+                        </div>
+                        <div id="div-field"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div id="div-game" class="d-none">
+        <div class="viewport-absolute">
+            <div class="viewport-absolute">
+                <div class="overlay-button-container">
+                    <!-- https://feathericons.com/ -->
+                    <button id="button-close-game" class="overlay-button">
+                        <img src="icons/x.svg" alt="Close">
+                    </button>
+                    <button id="button-zoom-in" class="overlay-button">
+                        <img src="icons/zoom-in.svg" alt="Zoom in">
+                    </button>
+                    <button id="button-zoom-out" class="overlay-button">
+                        <img src="icons/zoom-out.svg" alt="Zoom out">
+                    </button>
+                </div>
+            </div>
+            <div class="viewport-centered overlay">
+                <div class="box">
+                    <div id="div-field"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="matrix.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>

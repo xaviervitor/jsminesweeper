@@ -57,8 +57,8 @@ var GameState = {
 }
 
 // Element definitions
-const buttonMinus = document.getElementById("button-minus");
-const buttonPlus = document.getElementById("button-plus");
+const buttonZoomIn = document.getElementById("button-zoom-in");
+const buttonZoomOut = document.getElementById("button-zoom-out");
 const formConfig = document.getElementById("form-config");
 const inputTextRows = document.getElementById("inputnumber-rows");
 const inputTextColumns = document.getElementById("inputnumber-columns");
@@ -74,12 +74,12 @@ divField.addEventListener('contextmenu', function(e) {
     e.preventDefault();
 }, true);
 
-buttonMinus.addEventListener('click', function() {
-    setFieldScale(fieldScale * 0.9);
+buttonZoomIn.addEventListener('click', function() {
+    setFieldScale(fieldScale * 1.1);
 });
 
-buttonPlus.addEventListener('click', function() {
-    setFieldScale(fieldScale * 1.1);
+buttonZoomOut.addEventListener('click', function() {
+    setFieldScale(fieldScale * 0.9);
 });
 
 formConfig.addEventListener('submit', function() {
