@@ -154,7 +154,7 @@ function startGame(rows, columns, bombs) {
     GameState.openCells = 0;
     GameState.over = false;
     divGame.classList.remove('d-none');
-    divGame.classList.add('d-block');
+    divGame.classList.add('d-flex');
     setPlayField(rows, columns, bombs);
 }
 

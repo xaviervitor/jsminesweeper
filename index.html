@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="#" />
 </head>
 <body>
-    <div class="container">
+    <div class="viewport-centered">
         <div class="box">
             <h1>Minejsweeper!</h1>
             <form id="form-config" class="mb-2 d-flex justify-content-center flex-column">
@@ -51,12 +51,14 @@
                 <input id="button-play" type="submit" class="form-button" value="Play" />
             </form>
         </div>
-        <div id="div-game" class="d-none">
-            <div class="mb-2 d-none">
+    </div>
+    <div id="div-game" class="viewport-centered d-none">
+        <div class="box game-box">
+            <div>
                 <button id="button-minus">-</button>
                 <button id="button-plus">+</button>
             </div>
-            <div id="div-field" class="box"></div>
+            <div id="div-field"></div>
         </div>
     </div>
     <script src="matrix.js"></script> 
