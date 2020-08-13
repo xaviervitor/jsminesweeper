@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700');
+@import url('https://fonts.googleapis.com/css2?family=Nova+Round');
+
 /* Browser overrides */
 button:focus {
     outline: none !important;
@@ -14,7 +17,7 @@ input[type=number] {
 
 /* Variables */
 :root {
-    --cell-bg-color: rgb(163, 192, 183);
+    --cell-bg-color: rgb(184, 163, 192);
     --cell-border-light-color: rgb(231, 224, 208);
     --cell-border-dark-color: rgb(58, 38, 83);
     --cell-undiscovered-border-light-color: rgb(216, 211, 198);
@@ -24,6 +27,7 @@ input[type=number] {
     --button-pressed-color: rgb(58, 38, 83);
     --button-outline-color: rgba(110, 85, 141, 0.5);
 }
+
 
 /* Bootstrap extensions */
 .w-30 {
@@ -37,7 +41,7 @@ input[type=number] {
 /* Global styles */
 body {
     background-color: var(--cell-border-dark-color);
-    font-family: 'Nova Round', cursive;
+    font-family: 'Nova Round';
 }
 
 .viewport-absolute {
@@ -49,7 +53,11 @@ body {
 }
 
 .viewport-centered {
+    width: 100vw;
     height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
     display: flex;  
     justify-content: center;
     align-items: center;
@@ -61,6 +69,9 @@ body {
 }
 
 .overlay-button-container {
+    position: absolute;
+    right: 0;
+    top: 0;
     display: flex;
     justify-content: end; 
     align-items: end;
@@ -70,14 +81,30 @@ body {
 .overlay-button {
     background-color: transparent;
     border: none;
-    font-size: 24px;
     padding: 0.5rem;
     margin: 0.5rem 0.5rem 0rem 0.5rem;
     border-radius: 2rem;
+    transition: all 0.25s ease;
+}
+
+.overlay-button:focus {
+    animation: overlay-button-click 0.5s ease;
+}
+
+@keyframes overlay-button-click {
+    0% {
+        box-shadow: 0 0 0 0 transparent;
+    }
+    50% {
+        box-shadow: 0 0 0 4px var(--button-outline-color);
+    }
+    100% {
+        box-shadow: 0 0 0 12px transparent;
+    }
 }
 
 .overlay-button:hover {
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: var(--button-outline-color);
 }
 
 .box {
@@ -97,7 +124,7 @@ body {
     justify-content: center;
 }
 
-.form-button {
+.button-primary {
     padding: 0.5rem 2rem 0.5rem 2rem;
     display: flex;
     flex-flow: column;
@@ -109,11 +136,11 @@ body {
     background-color: var(--button-main-color);
 }
 
-.form-button:hover {
+.button-primary:hover {
     animation: button-hover .5s ease infinite alternate;
 }
 
-.form-button:focus {
+.button-primary:focus {
     animation: button-click 1s ease;
 }
 
@@ -163,7 +190,8 @@ body {
 }
 
 .cell-number {
-    font-family: 'Work Sans', sans-serif;
+    font-family: 'Work Sans';
+    font-weight: bold;
     font-size: 15pt;
 }
 

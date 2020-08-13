@@ -57,37 +57,54 @@ var GameState = {
 }
 
 // Element definitions
+const buttonCloseGame = document.getElementById("button-close-game");
 const buttonZoomIn = document.getElementById("button-zoom-in");
 const buttonZoomOut = document.getElementById("button-zoom-out");
 const formConfig = document.getElementById("form-config");
 const inputTextRows = document.getElementById("inputnumber-rows");
 const inputTextColumns = document.getElementById("inputnumber-columns");
 const inputTextBombs = document.getElementById("inputnumber-bombs");
+const divCustomConfig = document.getElementById("div-custom-config");
 const buttonPlay = document.getElementById("button-play");
 const divGame = document.getElementById("div-game");
 const divField = document.getElementById("div-field");
-const divCustomConfig = document.getElementById("div-custom-config");
+const divOverlay = document.getElementById('div-overlay');
 
 // Event binders
 
-divField.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
+divOverlay.addEventListener('click', function() {
+    hideElement(divGame);
+});
+
+divField.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
 }, true);
 
-buttonZoomIn.addEventListener('click', function() {
+divField.addEventListener('click', function(event) {
+    event.stopPropagation();
+});
+
+buttonCloseGame.addEventListener('click', function(event) {
+    event.stopPropagation();
+    resetAnimation(this);
+    hideElement(divGame);
+});
+
+buttonZoomIn.addEventListener('click', function(event) {
+    event.stopPropagation();
+    resetAnimation(this);
     setFieldScale(fieldScale * 1.1);
 });
 
-buttonZoomOut.addEventListener('click', function() {
+buttonZoomOut.addEventListener('click', function(event) {
+    event.stopPropagation();
+    resetAnimation(this);
     setFieldScale(fieldScale * 0.9);
 });
 
 formConfig.addEventListener('submit', function() {
     event.preventDefault();
-    buttonPlay.addEventListener("animationend", function () {
-        // Removes focus so that the next click animation plays
-        buttonPlay.blur();
-    }); 
+    resetAnimation(buttonPlay);
     startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
 });
 
@@ -102,13 +119,10 @@ function changeDifficulty(radioButton) {
     inputTextColumns.value = Difficulties[radioButton.value].columns;
     inputTextBombs.value = Difficulties[radioButton.value].bombs;
     
-    if (radioButton.value == "custom") {
-        divCustomConfig.classList.remove('d-none');
-        divCustomConfig.classList.add('d-block');
-    } else {
-        divCustomConfig.classList.remove('d-block');
-        divCustomConfig.classList.add('d-none');
-    }
+    if (radioButton.value == "custom")
+        showElement(divCustomConfig);
+    else
+        hideElement(divCustomConfig);
 }
 
 function getAdjacentCells(i, j) {
@@ -153,8 +167,7 @@ function startGame(rows, columns, bombs) {
     GameState.numberOfBombs = bombs;
     GameState.openCells = 0;
     GameState.over = false;
-    divGame.classList.remove('d-none');
-    divGame.classList.add('d-flex');
+    showElement(divGame, 'flex');
     setPlayField(rows, columns, bombs);
 }
 
@@ -164,10 +177,6 @@ function endGame(wonOrLost) {
         showModal(wonOrLost + '!');
         GameState.over = true;
     }
-}
-
-function showModal(message) {
-    console.log(message);
 }
 
 function getCellType(i, j) {
@@ -215,10 +224,6 @@ function openCell(i, j) {
     if (GameState.openCells == GameState.numberOfRows * GameState.numberOfColumns - GameState.numberOfBombs) {
         endGame('won');
     }
-}
-
-function getRandom(max) {
-    return Math.floor(Math.random() * max);
 }
 
 function getCellByCoordinate(i ,j) {
