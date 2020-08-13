@@ -12,8 +12,8 @@
     <link rel="shortcut icon" href="#" />
 </head>
 <body>
-    <div class="viewport-centered">
-        <div class="box">
+    <div class="centered">
+        <div class="p-3 d-flex justify-content-center align-items-center flex-column box">
             <h1>Minejsweeper!</h1>
             <form id="form-config" class="mb-2 d-flex justify-content-center flex-column">
                 <div class="d-flex flex-row">
@@ -52,25 +52,25 @@
                             value="10" required />
                     </div>
                 </div>
-                <button id="button-play" type="submit" class="button-primary">Play</button>
+                <button id="button-play" type="submit" class="button-primary align-self-center">Play</button>
             </form>
         </div>
     </div>
     <div id="div-game" class="d-none">
-        <div id="div-overlay" class="viewport-centered overlay">
-            <div id="div-field"></div>
-                <div class="overlay-button-container">
-                    <!-- https://feathericons.com/ -->
-                    <button id="button-close-game" class="overlay-button">
-                        <img src="icons/x.svg" alt="Close">
-                    </button>
-                    <button id="button-zoom-in" class="overlay-button">
-                        <img src="icons/plus.svg" alt="Zoom in">
-                    </button>
-                    <button id="button-zoom-out" class="overlay-button">
-                        <img src="icons/minus.svg" alt="Zoom out">
-                    </button>
-                </div>
+        <div id="div-overlay" class="centered overlay">
+            <div id="div-field" class="field"></div>
+            <div class="overlay-button-container">
+                <!-- https://feathericons.com/ -->
+                <button id="button-close-game" class="overlay-button">
+                    <img src="icons/x.svg" alt="Close">
+                </button>
+                <button id="button-zoom-in" class="overlay-button">
+                    <img src="icons/plus.svg" alt="Zoom in">
+                </button>
+                <button id="button-zoom-out" class="overlay-button">
+                    <img src="icons/minus.svg" alt="Zoom out">
+                </button>
+            </div>
         </div>
     </div>
     <script src="vitor.js"></script>

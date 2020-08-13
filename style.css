@@ -17,17 +17,18 @@ input[type=number] {
 
 /* Variables */
 :root {
+    --theme-dark-color: rgb(58, 38, 83);
+
     --cell-bg-color: rgb(184, 163, 192);
     --cell-border-light-color: rgb(231, 224, 208);
-    --cell-border-dark-color: rgb(58, 38, 83);
+    --cell-border-dark-color: var(--theme-dark-color);
     --cell-undiscovered-border-light-color: rgb(216, 211, 198);
     --cell-undiscovered-border-dark-color: rgb(117, 92, 148);
     --cell-size: 25px;
     --button-main-color: rgb(33, 11, 59);
-    --button-pressed-color: rgb(58, 38, 83);
+    --button-pressed-color: var(--theme-dark-color);
     --button-outline-color: rgba(110, 85, 141, 0.5);
 }
-
 
 /* Bootstrap extensions */
 .w-30 {
@@ -40,19 +41,11 @@ input[type=number] {
 
 /* Global styles */
 body {
-    background-color: var(--cell-border-dark-color);
+    background-color: var(--theme-dark-color);
     font-family: 'Nova Round';
 }
 
-.viewport-absolute {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.viewport-centered {
+.centered {
     width: 100vw;
     height: 100vh;
     position: absolute;
@@ -64,8 +57,15 @@ body {
 }
 
 /* Elements */
+
+.box {
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
 .overlay {
-    background-color: rgba(38, 10, 73, 0.75);
+    background-color: rgba(0, 0, 0, 0.75);
 }
 
 .overlay-button-container {
@@ -88,14 +88,11 @@ body {
 }
 
 .overlay-button:focus {
-    animation: overlay-button-click 0.5s ease;
+    animation: overlay-button-click .5s ease;
 }
 
 @keyframes overlay-button-click {
     0% {
-        box-shadow: 0 0 0 0 transparent;
-    }
-    50% {
         box-shadow: 0 0 0 4px var(--button-outline-color);
     }
     100% {
@@ -107,44 +104,17 @@ body {
     background-color: var(--button-outline-color);
 }
 
-.box {
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    flex-direction: column;
-    border-radius: 5px;
-    padding: 1rem;
-    background-color: white;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
-}
-
-#form-field {
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: center;
-}
-
 .button-primary {
     padding: 0.5rem 2rem 0.5rem 2rem;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-self: center;
     color: white;
     border-radius: 7px;
     border: 0 solid transparent;
     background-color: var(--button-main-color);
 }
-
 .button-primary:hover {
-    animation: button-hover .5s ease infinite alternate;
+    animation: button-primary-hover .5s ease infinite alternate;
 }
-
-.button-primary:focus {
-    animation: button-click 1s ease;
-}
-
-@keyframes button-hover {
+@keyframes button-primary-hover {
     from {
         background-color: var(--button-main-color);
         box-shadow: 0 0 0 0 transparent;
@@ -154,13 +124,11 @@ body {
         box-shadow: 0 0 0 4px var(--button-outline-color);
     }
 }
-
-@keyframes button-click {
-    0% {
-        background-color: var(--button-main-color);
-        box-shadow: 0 0 0 0 transparent;
-    }
-    50% {
+.button-primary:focus {
+    animation: button-primary-click .5s ease;
+}
+@keyframes button-primary-click {
+    00% {
         background-color: var(--button-pressed-color);
         box-shadow: 0 0 0 4px var(--button-outline-color);
     }
@@ -170,10 +138,9 @@ body {
     }
 }
 
-#div-field {
+.field {
     display: grid;
     cursor: pointer;
-    transform-origin: center;
     transition: all .25s ease;
 }
 
@@ -195,12 +162,11 @@ body {
     font-size: 15pt;
 }
 
-.cell-bomb {
+.cell-flag {
     font-size: 10pt;
-    pointer-events: none;
 }
 
-.cell-flag {
+.cell-bomb {
     font-size: 10pt;
 }
 
