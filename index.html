@@ -8,13 +8,14 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="bounce.css">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="#" />
 </head>
 <body>
     <div class="centered">
         <div class="p-3 d-flex justify-content-center align-items-center flex-column box">
-            <h1>Minejsweeper!</h1>
+            <h1 class="bouncing">Minejsweeper!</h1>
             <form id="form-config" class="mb-2 d-flex justify-content-center flex-column">
                 <div class="d-flex flex-row">
                     <label class="mr-2">
@@ -57,7 +58,10 @@
         </div>
     </div>
     <div id="div-game" class="d-none">
-        <div id="div-overlay" class="centered overlay">
+        <div id="div-overlay" class="centered overlay flex-column">
+            <div class="flex-row">
+                <button id="button-restart" class="cell cell-undiscovered" style="width: 50px; height: 50px;"></button>
+            </div>
             <div id="div-field" class="field"></div>
             <div class="overlay-button-container">
                 <!-- https://feathericons.com/ -->
@@ -73,8 +77,23 @@
             </div>
         </div>
     </div>
-    <script src="vitor.js"></script>
+    <div id="modal-endgame" class="centered overlay d-none">
+        <div class="box">
+            <div class="px-3 pt-3 pb-0">
+                <h2 id="modal-endgame-title" class="m-0 bouncing"></h2>
+            </div>
+            <div class="p-3">
+                Time elapsed: <span id="modal-endgame-text-time" class="pull-right"></span><br/>
+                Flags put: <span id="modal-endgame-text-flags" class="pull-right"></span>
+            </div>
+            <div class="px-3 pb-3 pt-0 d-flex justify-content-center">
+                <button id="button-modal-endgame" type="submit" class="button-primary"></button>
+            </div>
+        </div>
+    </div>
     <script src="matrix.js"></script>
+    <script src="bounce.js"></script>
+    <script src="vitor.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

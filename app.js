@@ -53,6 +53,9 @@ var GameState = {
     numberOfColumns: 0,
     numberOfBombs: 0,
     openCells: 0,
+    timeStarted: 0,
+    timeEnded: 0,
+    flagCounter: 0,
     over: false
 }
 
@@ -66,47 +69,69 @@ const inputTextColumns = document.getElementById("inputnumber-columns");
 const inputTextBombs = document.getElementById("inputnumber-bombs");
 const divCustomConfig = document.getElementById("div-custom-config");
 const buttonPlay = document.getElementById("button-play");
+const buttonRestart = document.getElementById("button-restart");
 const divGame = document.getElementById("div-game");
 const divField = document.getElementById("div-field");
 const divOverlay = document.getElementById('div-overlay');
+const modalEndgame = document.getElementById("modal-endgame");
+const modalEndgameTitle = document.getElementById("modal-endgame-title");
+const textModalEndgameTime = document.getElementById("modal-endgame-text-time");
+const textModalEndgameFlags = document.getElementById("modal-endgame-text-flags");
+const buttonModalEndgame = document.getElementById("button-modal-endgame");
 
-// Event binders
+window.onload = function() {
+    // Applies bouncy movement to all .bouncing classes
+    for (element of document.querySelectorAll('.bouncing')) {
+        bounce(element, 1, 0.2);
+    }
+    
+    // Event binders
+    divField.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+    }, true);
 
-divOverlay.addEventListener('click', function() {
-    hideElement(divGame);
-});
+    divField.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
 
-divField.addEventListener('contextmenu', function(event) {
-    event.preventDefault();
-}, true);
+    formConfig.addEventListener('submit', function() {
+        event.preventDefault();
+        resetAnimation(buttonPlay);
+        startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
+    });
 
-divField.addEventListener('click', function(event) {
-    event.stopPropagation();
-});
+    buttonRestart.addEventListener('click', function() {
+        event.stopPropagation();
+        startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
+    });
 
-buttonCloseGame.addEventListener('click', function(event) {
-    event.stopPropagation();
-    resetAnimation(this);
-    hideElement(divGame);
-});
+    divOverlay.addEventListener('click', function() {
+        hideElement(divGame);
+    });
 
-buttonZoomIn.addEventListener('click', function(event) {
-    event.stopPropagation();
-    resetAnimation(this);
-    setFieldScale(fieldScale * 1.1);
-});
+    buttonCloseGame.addEventListener('click', function(event) {
+        event.stopPropagation();
+        resetAnimation(this);
+        hideElement(divGame);
+    });
 
-buttonZoomOut.addEventListener('click', function(event) {
-    event.stopPropagation();
-    resetAnimation(this);
-    setFieldScale(fieldScale * 0.9);
-});
+    buttonZoomIn.addEventListener('click', function(event) {
+        event.stopPropagation();
+        resetAnimation(this);
+        setFieldScale(fieldScale * 1.1);
+    });
 
-formConfig.addEventListener('submit', function() {
-    event.preventDefault();
-    resetAnimation(buttonPlay);
-    startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
-});
+    buttonZoomOut.addEventListener('click', function(event) {
+        event.stopPropagation();
+        resetAnimation(this);
+        setFieldScale(fieldScale * 0.9);
+    });
+
+    buttonModalEndgame.addEventListener('click', function(event) {
+        resetAnimation(this);
+        hideElement(modalEndgame);
+    })
+}
 
 // Functions
 function setFieldScale(newScale) {
@@ -161,20 +186,30 @@ function openAllCells() {
     }
 }
 
+function showEndgameModal(isGameWon) {
+    modalEndgameTitle.innerHTML = (isGameWon) ? "Congratulations! &#x1f973;<br/>You Won The Game!" : "You lost it man... &#x1f614;";
+    textModalEndgameTime.textContent = GameState.timeEnded - GameState.timeStarted;
+    textModalEndgameFlags.textContent = GameState.flagCounter;
+    buttonModalEndgame.innerHTML = (isGameWon) ? "Smash it again &#x1f60e;" : "Get out of my sight I can do it &#x1f624;";
+    showElement(modalEndgame, 'flex');
+}
+
 function startGame(rows, columns, bombs) {
     GameState.numberOfRows = rows;
     GameState.numberOfColumns = columns;
     GameState.numberOfBombs = bombs;
     GameState.openCells = 0;
     GameState.over = false;
+    GameState.timeStarted = Date.now();
     showElement(divGame, 'flex');
     setPlayField(rows, columns, bombs);
 }
 
-function endGame(wonOrLost) {
+function endGame(isGameWon) {
+    GameState.timeEnded = Date.now();
     if (!GameState.over) {
         openAllCells();
-        showModal(wonOrLost + '!');
+        showEndgameModal(isGameWon);
         GameState.over = true;
     }
 }
@@ -195,6 +230,7 @@ function flagCell(i, j) {
         thisCell.classList.toggle('fa')
         thisCell.classList.toggle('fa-flag');
         thisCell.classList.toggle('cell-flag');
+        GameState.flagCounter++;
     }
 }
 
@@ -205,7 +241,7 @@ function openCell(i, j) {
     if (cellType == CellTypes.bomb) {
         thisCell.classList.add("opened", "cell-bomb");;
         thisCell.innerHTML = '<i class="fa fa-bomb"></i>';
-        endGame('lost');
+        endGame(false);
     } else if (!thisCell.classList.contains("opened")){
         GameState.openCells++;
         thisCell.classList.remove("cell-undiscovered");
@@ -222,7 +258,7 @@ function openCell(i, j) {
     }
     
     if (GameState.openCells == GameState.numberOfRows * GameState.numberOfColumns - GameState.numberOfBombs) {
-        endGame('won');
+        endGame(true);
     }
 }
 

@@ -18,7 +18,3 @@ function resetAnimation(button) {
 function getRandom(max) {
     return Math.floor(Math.random() * max);
 }
-
-function showModal(message) {
-    console.log(message);
-}
