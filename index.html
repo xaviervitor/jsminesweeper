@@ -60,25 +60,27 @@
         </div>
     </div>
     <div id="div-fullscreen" class="d-none">
-        <div id="div-overlay" class="centered overlay flex-column">
-            <div class="flex-row">
-                <button id="button-restart" class="cell cell-undiscovered" style="width: 50px; height: 50px;"></button>
-            </div>
-            <div id="div-field" class="field"></div>
-            <div id="overlay-button-container" class="overlay-button-container">
-                <!-- https://feathericons.com/ -->
-                <button id="button-close-game" class="overlay-button">
-                    <img src="icons/x.svg" alt="Close" title="Close">
+        <div id="div-overlay" class="centered overlay">
+            <div id="div-game-container" class="d-flex flex-column align-items-center">
+                <button id="button-restart" class="overlay-button" style="width: 50px; height: 50px;">
+                    <img src="icons/refresh-cw.svg" alt="Restart game" title="Restart game">
                 </button>
-                <button id="button-zoom-in" class="overlay-button">
-                    <img src="icons/plus.svg" alt="Zoom in" title="Zoom in">
-                </button>
-                <button id="button-zoom-out" class="overlay-button">
-                    <img src="icons/minus.svg" alt="Zoom out" title="Zoom out">
-                </button>
-                <button id="button-settings" class="overlay-button">
-                    <img src="icons/settings.svg" alt="Settings" title="Settings">
-                </button>
+                <div id="div-field" class="field"></div>
+                <div id="overlay-button-container" class="overlay-button-container">
+                    <!-- https://feathericons.com/ -->
+                    <button id="button-close-game" class="overlay-button">
+                        <img src="icons/x.svg" alt="Close" title="Close">
+                    </button>
+                    <button id="button-zoom-in" class="overlay-button">
+                        <img src="icons/plus.svg" alt="Zoom in" title="Zoom in">
+                    </button>
+                    <button id="button-zoom-out" class="overlay-button">
+                        <img src="icons/minus.svg" alt="Zoom out" title="Zoom out">
+                    </button>
+                    <button id="button-settings" class="overlay-button">
+                        <img src="icons/settings.svg" alt="Settings" title="Settings">
+                    </button>
+                </div>
             </div>
         </div>
     </div>

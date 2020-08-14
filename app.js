@@ -80,23 +80,22 @@ window.onload = function () {
         event.preventDefault();
     }, true);
 
-    divField.addEventListener('click', function (event) {
-        event.stopPropagation();
-    });
-
     document.getElementById("form-config").addEventListener('submit', function () {
         event.preventDefault();
         resetAnimation(document.getElementById("button-play"));
         startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
-
-    document.getElementById("button-restart").addEventListener('click', function () {
+    
+    document.getElementById('div-game-container').addEventListener('click', function () {
         event.stopPropagation();
-        startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
-
+    
     document.getElementById('div-overlay').addEventListener('click', function () {
         hideElement(divFullscreen);
+    });
+    
+    document.getElementById("button-restart").addEventListener('click', function () {
+        startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
 
     document.getElementById('overlay-button-container').addEventListener('click', function () {
