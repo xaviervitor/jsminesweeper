@@ -60,24 +60,14 @@ var GameState = {
 }
 
 // Element definitions
-const buttonCloseGame = document.getElementById("button-close-game");
-const buttonZoomIn = document.getElementById("button-zoom-in");
-const buttonZoomOut = document.getElementById("button-zoom-out");
-const formConfig = document.getElementById("form-config");
 const inputTextRows = document.getElementById("inputnumber-rows");
 const inputTextColumns = document.getElementById("inputnumber-columns");
 const inputTextBombs = document.getElementById("inputnumber-bombs");
 const divCustomConfig = document.getElementById("div-custom-config");
-const buttonPlay = document.getElementById("button-play");
-const buttonRestart = document.getElementById("button-restart");
-const divGame = document.getElementById("div-game");
+const divFullscreen = document.getElementById("div-fullscreen");
 const divField = document.getElementById("div-field");
-const divOverlay = document.getElementById('div-overlay');
-const modalEndgame = document.getElementById("modal-endgame");
-const modalEndgameTitle = document.getElementById("modal-endgame-title");
-const textModalEndgameTime = document.getElementById("modal-endgame-text-time");
-const textModalEndgameFlags = document.getElementById("modal-endgame-text-flags");
-const buttonModalEndgame = document.getElementById("button-modal-endgame");
+const modalEndgame = document.getElementById("modal-custom");
+const buttonModalEndgame = document.getElementById("button-modal-custom");
 
 window.onload = function() {
     // Applies bouncy movement to all .bouncing classes
@@ -94,37 +84,43 @@ window.onload = function() {
         event.stopPropagation();
     });
 
-    formConfig.addEventListener('submit', function() {
+    document.getElementById("form-config").addEventListener('submit', function() {
         event.preventDefault();
-        resetAnimation(buttonPlay);
+        resetAnimation(document.getElementById("button-play"));
         startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
 
-    buttonRestart.addEventListener('click', function() {
+    document.getElementById("button-restart").addEventListener('click', function() {
         event.stopPropagation();
         startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
 
-    divOverlay.addEventListener('click', function() {
-        hideElement(divGame);
+    document.getElementById('div-overlay').addEventListener('click', function() {
+        hideElement(divFullscreen);
+    });
+    
+    document.getElementById('overlay-button-container').addEventListener('click', function() {
+        event.stopPropagation();
     });
 
-    buttonCloseGame.addEventListener('click', function(event) {
-        event.stopPropagation();
+    document.getElementById("button-close-game").addEventListener('click', function(event) {
         resetAnimation(this);
-        hideElement(divGame);
+        hideElement(divFullscreen);
     });
 
-    buttonZoomIn.addEventListener('click', function(event) {
-        event.stopPropagation();
+    document.getElementById("button-zoom-in").addEventListener('click', function(event) {
         resetAnimation(this);
         setFieldScale(fieldScale * 1.1);
     });
 
-    buttonZoomOut.addEventListener('click', function(event) {
-        event.stopPropagation();
+    document.getElementById("button-zoom-out").addEventListener('click', function(event) {
         resetAnimation(this);
         setFieldScale(fieldScale * 0.9);
+    });
+
+    document.getElementById("button-settings").addEventListener('click', function(event) {
+        resetAnimation(this);
+        showModal
     });
 
     buttonModalEndgame.addEventListener('click', function(event) {
@@ -186,12 +182,21 @@ function openAllCells() {
     }
 }
 
-function showEndgameModal(isGameWon) {
-    modalEndgameTitle.innerHTML = (isGameWon) ? "Congratulations! &#x1f973;<br/>You Won The Game!" : "You lost it fam... &#x1f614;";
-    textModalEndgameTime.textContent = GameState.timeEnded - GameState.timeStarted;
-    textModalEndgameFlags.textContent = GameState.flagCounter;
-    buttonModalEndgame.innerHTML = (isGameWon) ? "Smash it again &#x1f60e;" : "I'll try again I can do it &#x1f624;";
+function showModal(title, message, buttonText) {
+    document.getElementById("modal-custom-title").innerHTML = title;
+    document.getElementById("modal-custom-body").innerHTML = message;
+    buttonModalEndgame.innerHTML = buttonText;
     showElement(modalEndgame, 'flex');
+}
+
+function showEndgameModal(isGameWon) {
+    let title = (isGameWon) ? "Congratulations! &#x1f973;<br/>You Won The Game!" : "You lost it fam... &#x1f614;";
+    let message = `
+        Time elapsed: <span class="pull-right">${GameState.timeEnded - GameState.timeStarted}</span><br/>
+        Flags put: <span class="pull-right">${GameState.flagCounter}</span>
+    `;
+    let buttonText = (isGameWon) ? "Smash it again &#x1f60e;" : "I'll try again I can do it &#x1f624;";
+    showModal(title, message, buttonText);
 }
 
 function startGame(rows, columns, bombs) {
@@ -201,7 +206,7 @@ function startGame(rows, columns, bombs) {
     GameState.openCells = 0;
     GameState.over = false;
     GameState.timeStarted = Date.now();
-    showElement(divGame, 'flex');
+    showElement(divFullscreen, 'flex');
     setPlayField(rows, columns, bombs);
 }
 

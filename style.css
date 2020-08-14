@@ -18,12 +18,13 @@ input[type=number] {
 /* Variables */
 :root {
     --theme-dark-color: rgb(58, 38, 83);
-
+    --theme-light-color: rgb(117, 92, 148);
+    
     --cell-bg-color: rgb(184, 163, 192);
     --cell-border-light-color: rgb(231, 224, 208);
     --cell-border-dark-color: var(--theme-dark-color);
     --cell-undiscovered-border-light-color: rgb(216, 211, 198);
-    --cell-undiscovered-border-dark-color: rgb(117, 92, 148);
+    --cell-undiscovered-border-dark-color: var(--theme-light-color);
     --cell-size: 25px;
     --button-main-color: rgb(33, 11, 59);
     --button-pressed-color: var(--theme-dark-color);

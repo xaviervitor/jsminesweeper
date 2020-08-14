@@ -57,37 +57,37 @@
             </form>
         </div>
     </div>
-    <div id="div-game" class="d-none">
+    <div id="div-fullscreen" class="d-none">
         <div id="div-overlay" class="centered overlay flex-column">
             <div class="flex-row">
                 <button id="button-restart" class="cell cell-undiscovered" style="width: 50px; height: 50px;"></button>
             </div>
             <div id="div-field" class="field"></div>
-            <div class="overlay-button-container">
+            <div id="overlay-button-container" class="overlay-button-container">
                 <!-- https://feathericons.com/ -->
                 <button id="button-close-game" class="overlay-button">
-                    <img src="icons/x.svg" alt="Close">
+                    <img src="icons/x.svg" alt="Close" title="Close">
                 </button>
                 <button id="button-zoom-in" class="overlay-button">
-                    <img src="icons/plus.svg" alt="Zoom in">
+                    <img src="icons/plus.svg" alt="Zoom in" title="Zoom in">
                 </button>
                 <button id="button-zoom-out" class="overlay-button">
-                    <img src="icons/minus.svg" alt="Zoom out">
+                    <img src="icons/minus.svg" alt="Zoom out" title="Zoom out">
+                </button>
+                <button id="button-settings" class="overlay-button">
+                    <img src="icons/settings.svg" alt="Settings" title="Settings">
                 </button>
             </div>
         </div>
     </div>
-    <div id="modal-endgame" class="centered overlay d-none">
+    <div id="modal-custom" class="centered overlay d-none">
         <div class="box">
             <div class="px-3 pt-3 pb-0">
-                <h2 id="modal-endgame-title" class="m-0 bouncing"></h2>
+                <h2 id="modal-custom-title" class="m-0 bouncing"></h2>
             </div>
-            <div class="p-3">
-                Time elapsed: <span id="modal-endgame-text-time" class="pull-right"></span><br/>
-                Flags put: <span id="modal-endgame-text-flags" class="pull-right"></span>
-            </div>
+            <div id="modal-custom-body" class="p-3"></div>
             <div class="px-3 pb-3 pt-0 d-flex justify-content-center">
-                <button id="button-modal-endgame" type="submit" class="button-primary"></button>
+                <button id="button-modal-custom" type="submit" class="button-primary"></button>
             </div>
         </div>
     </div>
