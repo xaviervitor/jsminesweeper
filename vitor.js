@@ -12,7 +12,7 @@ function resetAnimation(button) {
     button.addEventListener("animationend", function () {
         // Removes focus so that the next click animation plays
         button.blur();
-    }); 
+    });
 }
 
 function getRandom(max) {

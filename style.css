@@ -1,25 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700');
 @import url('https://fonts.googleapis.com/css2?family=Nova+Round');
-
 /* Browser overrides */
+
 button:focus {
     outline: none !important;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
+
 input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 /* Variables */
+
 :root {
     --theme-dark-color: rgb(58, 38, 83);
     --theme-light-color: rgb(117, 92, 148);
-    
     --cell-bg-color: rgb(184, 163, 192);
     --cell-border-light-color: rgb(231, 224, 208);
     --cell-border-dark-color: var(--theme-dark-color);
@@ -32,6 +32,7 @@ input[type=number] {
 }
 
 /* Bootstrap extensions */
+
 .w-30 {
     width: 30%;
 }
@@ -41,6 +42,7 @@ input[type=number] {
 }
 
 /* Global styles */
+
 body {
     background-color: var(--theme-dark-color);
     font-family: 'Nova Round';
@@ -52,7 +54,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    display: flex;  
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -74,7 +76,7 @@ body {
     right: 0;
     top: 0;
     display: flex;
-    justify-content: end; 
+    justify-content: end;
     align-items: end;
     flex-direction: column;
 }
@@ -112,9 +114,11 @@ body {
     border: 0 solid transparent;
     background-color: var(--button-main-color);
 }
+
 .button-primary:hover {
     animation: button-primary-hover .5s ease infinite alternate;
 }
+
 @keyframes button-primary-hover {
     from {
         background-color: var(--button-main-color);
@@ -125,9 +129,11 @@ body {
         box-shadow: 0 0 0 4px var(--button-outline-color);
     }
 }
+
 .button-primary:focus {
     animation: button-primary-click .5s ease;
 }
+
 @keyframes button-primary-click {
     00% {
         background-color: var(--button-pressed-color);
