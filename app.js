@@ -187,10 +187,10 @@ function openAllCells() {
 }
 
 function showEndgameModal(isGameWon) {
-    modalEndgameTitle.innerHTML = (isGameWon) ? "Congratulations! &#x1f973;<br/>You Won The Game!" : "You lost it man... &#x1f614;";
+    modalEndgameTitle.innerHTML = (isGameWon) ? "Congratulations! &#x1f973;<br/>You Won The Game!" : "You lost it fam... &#x1f614;";
     textModalEndgameTime.textContent = GameState.timeEnded - GameState.timeStarted;
     textModalEndgameFlags.textContent = GameState.flagCounter;
-    buttonModalEndgame.innerHTML = (isGameWon) ? "Smash it again &#x1f60e;" : "Get out of my sight I can do it &#x1f624;";
+    buttonModalEndgame.innerHTML = (isGameWon) ? "Smash it again &#x1f60e;" : "I'll try again I can do it &#x1f624;";
     showElement(modalEndgame, 'flex');
 }
 
