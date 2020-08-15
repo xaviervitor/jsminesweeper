@@ -66,8 +66,7 @@ const inputTextBombs = document.getElementById("inputnumber-bombs");
 const divCustomConfig = document.getElementById("div-custom-config");
 const divFullscreen = document.getElementById("div-fullscreen");
 const divField = document.getElementById("div-field");
-const modalEndgame = document.getElementById("modal-custom");
-const buttonModalEndgame = document.getElementById("button-modal-custom");
+const modal = document.getElementById("modal-custom");
 
 window.onload = function () {
     // Applies bouncy movement to all .bouncing classes
@@ -86,20 +85,8 @@ window.onload = function () {
         startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
     
-    document.getElementById('div-game-container').addEventListener('click', function () {
-        event.stopPropagation();
-    });
-    
-    document.getElementById('div-overlay').addEventListener('click', function () {
-        hideElement(divFullscreen);
-    });
-    
     document.getElementById("button-restart").addEventListener('click', function () {
         startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
-    });
-
-    document.getElementById('overlay-button-container').addEventListener('click', function () {
-        event.stopPropagation();
     });
 
     document.getElementById("button-close-game").addEventListener('click', function (event) {
@@ -119,19 +106,44 @@ window.onload = function () {
 
     document.getElementById("button-settings").addEventListener('click', function (event) {
         resetAnimation(this);
-        showModal
+        let spanFlagDisplay = document.getElementById("span-flag-display");
+        let spanTimeDisplay = document.getElementById("span-time-display");
+        let title = "Game options";
+        let body = `
+            <div>
+                <input type="checkbox" id="checkbox-flag-display" name="game-options" value="flag-display"
+                ${(spanFlagDisplay.style.getPropertyValue('visibility') == 'visible') ? 'checked' : ''}>
+                <label for="checkbox-bomb-flag">Display bomb flag counter</label>
+            </div>  
+            <div>
+                <input type="checkbox" id="checkbox-time-display" name="game-options" value="time-display"
+                ${(spanTimeDisplay.style.getPropertyValue('visibility') == 'visible') ? 'checked' : ''}>
+                <label for="checkbox-time-elapsed">Display time elapsed</label>
+            </div>
+        `;
+        let buttonText = 'Confirm';
+        showModal(title, body, buttonText, function () {
+            if (document.getElementById("checkbox-flag-display").checked) {
+                spanFlagDisplay.style.visibility = 'visible';
+            } else {
+                spanFlagDisplay.style.visibility = 'hidden';
+            }
+            if (document.getElementById("checkbox-time-display").checked) {
+                spanTimeDisplay.style.visibility = 'visible';
+            } else {
+                spanTimeDisplay.style.visibility = 'hidden';
+            }
+            hideElement(modal);
+        });
     });
 
-    buttonModalEndgame.addEventListener('click', function (event) {
-        resetAnimation(this);
-        hideElement(modalEndgame);
-    })
+    
 }
 
 // Functions
 function setFieldScale(newScale) {
     fieldScale = newScale;
-    divField.style.setProperty('transform', `scale(${fieldScale})`);
+    document.getElementById('div-game-container').style.setProperty('transform', `scale(${fieldScale})`);
 }
 
 function changeDifficulty(radioButton) {
@@ -145,159 +157,18 @@ function changeDifficulty(radioButton) {
         hideElement(divCustomConfig);
 }
 
-function getAdjacentCells(i, j) {
-    let cells = [];
-    try { if (GameState.cellMatrix[i - 1][j - 1] != undefined) cells.push({ i: i - 1, j: j - 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i - 1][j + 0] != undefined) cells.push({ i: i - 1, j: j + 0 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i - 1][j + 1] != undefined) cells.push({ i: i - 1, j: j + 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 0][j - 1] != undefined) cells.push({ i: i + 0, j: j - 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 0][j + 0] != undefined) cells.push({ i: i + 0, j: j + 0 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 0][j + 1] != undefined) cells.push({ i: i + 0, j: j + 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 1][j - 1] != undefined) cells.push({ i: i + 1, j: j - 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 1][j + 0] != undefined) cells.push({ i: i + 1, j: j + 0 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 1][j + 1] != undefined) cells.push({ i: i + 1, j: j + 1 }); } catch (TypeError) { }
-    return cells;
-}
-
-function openAllCells() {
-    for (let i = 0; i < GameState.numberOfRows; i++) {
-        for (let j = 0; j < GameState.numberOfColumns; j++) {
-            let thisCell = getCellByCoordinate(i, j);
-            thisCell.classList.remove("fa", "fa-flag", "cell-flag");
-            const cellType = getCellType(i, j);
-            if (cellType == CellTypes.bomb) {
-                thisCell.classList.add("cell-bomb");;
-                thisCell.innerHTML = '<i class="fa fa-bomb"></i>';
-            } else {
-                thisCell.classList.remove("cell-undiscovered");
-                if (cellType != CellTypes.space) {
-                    thisCell.classList.add("cell-number");
-                    thisCell.textContent = cellType;
-                    thisCell.style.setProperty("color", CellColorMapping[cellType]);
-                }
-            }
-            thisCell.classList.add("opened");
-        }
-    }
-}
-
-function showModal(title, message, buttonText) {
-    document.getElementById("modal-custom-title").innerHTML = title;
-    document.getElementById("modal-custom-body").innerHTML = message;
-    buttonModalEndgame.innerHTML = buttonText;
-    showElement(modalEndgame, 'flex');
-}
-
 function showEndgameModal(isGameWon) {
     let title = (isGameWon) ? "Congratulations! &#x1f973;<br/>You Won The Game!" : "You lost it fam... &#x1f614;";
     let message = `
-        Time elapsed: <span class="pull-right">${GameState.timeEnded - GameState.timeStarted}</span><br/>
+        Time elapsed: <span class="pull-right">${msToTime(GameState.timeEnded - GameState.timeStarted)}</span><br/>
         Flags put: <span class="pull-right">${GameState.flagCounter}</span>
     `;
     let buttonText = (isGameWon) ? "Smash it again &#x1f60e;" : "I'll try again I can do it &#x1f624;";
-    showModal(title, message, buttonText);
-}
-
-function startGame(rows, columns, bombs) {
-    GameState.numberOfRows = rows;
-    GameState.numberOfColumns = columns;
-    GameState.numberOfBombs = bombs;
-    GameState.openCells = 0;
-    GameState.over = false;
-    GameState.timeStarted = Date.now();
-    showElement(divFullscreen, 'flex');
-    setPlayField(rows, columns, bombs);
-}
-
-function endGame(isGameWon) {
-    GameState.timeEnded = Date.now();
-    if (!GameState.over) {
-        openAllCells();
-        showEndgameModal(isGameWon);
-        GameState.over = true;
+    let buttonAction = function () {
+        resetAnimation(this);
+        hideElement(modal);
     }
-}
-
-function getCellType(i, j) {
-    if (GameState.cellMatrix[i][j] == CellTypes.bomb) return CellTypes.bomb;
-    let bombCounter = 0;
-    for (cell of getAdjacentCells(i, j)) {
-        if (GameState.cellMatrix[cell.i][cell.j] == CellTypes.bomb)
-            bombCounter++;
-    }
-    return bombCounter;
-}
-
-function flagCell(i, j) {
-    let thisCell = getCellByCoordinate(i, j);
-    if (!thisCell.classList.contains('opened')) {
-        thisCell.classList.toggle('fa')
-        thisCell.classList.toggle('fa-flag');
-        thisCell.classList.toggle('cell-flag');
-        GameState.flagCounter++;
-    }
-}
-
-function openCell(i, j) {
-    let thisCell = getCellByCoordinate(i, j);
-    thisCell.classList.remove("fa", "fa-flag", "cell-flag");
-    const cellType = getCellType(i, j);
-    if (cellType == CellTypes.bomb) {
-        thisCell.classList.add("opened", "cell-bomb");;
-        thisCell.innerHTML = '<i class="fa fa-bomb"></i>';
-        endGame(false);
-    } else if (!thisCell.classList.contains("opened")) {
-        GameState.openCells++;
-        thisCell.classList.remove("cell-undiscovered");
-        thisCell.classList.add("opened");
-        if (cellType == CellTypes.space) {
-            for (cell of getAdjacentCells(i, j)) {
-                openCell(cell.i, cell.j);
-            }
-        } else {
-            thisCell.classList.add("cell-number");
-            thisCell.textContent = cellType;
-            thisCell.style.setProperty("color", CellColorMapping[cellType]);
-        }
-    }
-
-    if (GameState.openCells == GameState.numberOfRows * GameState.numberOfColumns - GameState.numberOfBombs) {
-        endGame(true);
-    }
-}
-
-function getCellByCoordinate(i, j) {
-    return document.getElementById(`cell-${i}-${j}`);
-}
-
-function setPlayField(rows, columns, bombs) {
-    GameState.cellMatrix = Array.matrix(rows, columns, CellTypes.space);
-
-    // Generate bombs
-    for (let i = 0; i < bombs; i++) {
-        let randomRow = getRandom(rows);
-        let randomColumn = getRandom(columns);
-        while (GameState.cellMatrix[randomRow][randomColumn] == CellTypes.bomb) {
-            randomRow = getRandom(rows);
-            randomColumn = getRandom(columns);
-        }
-        GameState.cellMatrix[randomRow][randomColumn] = CellTypes.bomb;
-    }
-
-    // Renders field
-    divField.innerHTML = '';
-    for (let i = 0; i < rows; i++) {
-        // let divRow = document.createElement('span');
-        for (let j = 0; j < columns; j++) {
-            let cell = document.createElement('span');
-            cell.id = `cell-${i}-${j}`;
-            cell.classList.add('cell', 'cell-undiscovered');
-            cell.addEventListener('mouseup', function (event) { onCellClick(event, i, j) });
-            divField.appendChild(cell);
-        }
-
-    }
-    divField.style.setProperty('grid-template-columns', `repeat(${columns}, 0fr)`);
+    showModal(title, message, buttonText, buttonAction);
 }
 
 function onCellClick(event, i, j) {

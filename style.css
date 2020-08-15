@@ -48,7 +48,7 @@ body {
     font-family: 'Nova Round';
 }
 
-.centered {
+centered {
     width: 100vw;
     height: 100vh;
     position: absolute;
@@ -67,44 +67,10 @@ body {
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 }
 
-.overlay {
-    background-color: rgba(0, 0, 0, 0.75);
-}
-
-.overlay-button-container {
-    position: absolute;
-    right: 0;
-    top: 0;
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    flex-direction: column;
-}
-
-.overlay-button {
-    background-color: transparent;
-    border: none;
-    padding: 0.5rem;
-    margin: 0.5rem 0.5rem 0rem 0.5rem;
-    border-radius: 2rem;
-    transition: all 0.25s ease;
-}
-
-.overlay-button:focus {
-    animation: overlay-button-click .5s ease;
-}
-
-@keyframes overlay-button-click {
-    0% {
-        box-shadow: 0 0 0 4px var(--button-outline-color);
-    }
-    100% {
-        box-shadow: 0 0 0 12px transparent;
-    }
-}
-
-.overlay-button:hover {
-    background-color: var(--button-outline-color);
+.number-display {
+    color: var(--button-pressed-color);
+    width: 3em;
+    text-align: center;
 }
 
 .button-primary {
@@ -190,4 +156,44 @@ body {
     border-left-color: var(--cell-undiscovered-border-dark-color);
     border-right-color: var(--cell-undiscovered-border-light-color);
     border-bottom-color: var(--cell-undiscovered-border-light-color);
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.overlay-button-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    flex-direction: column;
+}
+
+.overlay-button {
+    background-color: transparent;
+    border: none;
+    padding: 0.5rem;
+    margin: 0.5rem 0.5rem 0rem 0.5rem;
+    border-radius: 2rem;
+    transition: all 0.25s ease;
+}
+
+.overlay-button:focus {
+    animation: overlay-button-click .5s ease;
+}
+
+@keyframes overlay-button-click {
+    0% {
+        box-shadow: 0 0 0 4px var(--button-outline-color);
+    }
+    100% {
+        box-shadow: 0 0 0 12px transparent;
+    }
+}
+
+.overlay-button:hover {
+    background-color: var(--button-outline-color);
 }

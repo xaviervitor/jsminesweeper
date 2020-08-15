@@ -9,13 +9,13 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="bounce.css">
+    <link rel="stylesheet" href="./bounce/bounce.css">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="#" />
 </head>
 
 <body>
-    <div class="centered">
+    <centered>
         <div class="p-3 d-flex justify-content-center align-items-center flex-column box">
             <h1 class="bouncing">Minejsweeper!</h1>
             <form id="form-config" class="mb-2 d-flex justify-content-center flex-column">
@@ -58,47 +58,52 @@
                 <button id="button-play" type="submit" class="button-primary align-self-center">Play</button>
             </form>
         </div>
-    </div>
-    <div id="div-fullscreen" class="d-none">
-        <div id="div-overlay" class="centered overlay">
-            <div id="div-game-container" class="d-flex flex-column align-items-center">
-                <button id="button-restart" class="overlay-button" style="width: 50px; height: 50px;">
-                    <img src="icons/refresh-cw.svg" alt="Restart game" title="Restart game">
+    </centered>
+    <centered id="div-fullscreen" class="overlay d-none">
+        <div id="div-game-container" class="d-flex flex-column align-items-center box p-3">
+            <div class="d-flex mb-3 w-100 flex-row justify-content-around">
+                <span id="span-flag-display" class="p-2 number-display" style="visibility: visible;">99</span>
+                <button id="button-restart" class="p-2 button-primary">
+                    <span id="emoji-display">&#x1f973;</span>
                 </button>
-                <div id="div-field" class="field"></div>
-                <div id="overlay-button-container" class="overlay-button-container">
-                    <!-- https://feathericons.com/ -->
-                    <button id="button-close-game" class="overlay-button">
-                        <img src="icons/x.svg" alt="Close" title="Close">
-                    </button>
-                    <button id="button-zoom-in" class="overlay-button">
-                        <img src="icons/plus.svg" alt="Zoom in" title="Zoom in">
-                    </button>
-                    <button id="button-zoom-out" class="overlay-button">
-                        <img src="icons/minus.svg" alt="Zoom out" title="Zoom out">
-                    </button>
-                    <button id="button-settings" class="overlay-button">
-                        <img src="icons/settings.svg" alt="Settings" title="Settings">
-                    </button>
-                </div>
+                <span id="span-time-display" class="p-2 number-display" style="visibility: hidden;">999</span>
             </div>
+            <div id="div-field" class="field"></div>
         </div>
-    </div>
-    <div id="modal-custom" class="centered overlay d-none">
+        <div id="overlay-button-container" class="overlay-button-container">
+            <!-- https://feathericons.com/ -->
+            <button id="button-close-game" class="overlay-button">
+                <img src="icons/x.svg" alt="Close" title="Close">
+            </button>
+            <button id="button-zoom-in" class="overlay-button">
+                <img src="icons/plus.svg" alt="Zoom in" title="Zoom in">
+            </button>
+            <button id="button-zoom-out" class="overlay-button">
+                <img src="icons/minus.svg" alt="Zoom out" title="Zoom out">
+            </button>
+            <button id="button-settings" class="overlay-button">
+                <img src="icons/settings.svg" alt="Settings" title="Settings">
+            </button>
+        </div>
+    </centered>
+    <centered id="modal-custom" class="overlay d-none">
         <div class="box">
             <div class="px-3 pt-3 pb-0">
                 <h2 id="modal-custom-title" class="m-0 bouncing"></h2>
             </div>
-            <div id="modal-custom-body" class="p-3"></div>
+            <div id="modal-custom-body" class="p-3">
+
+            </div>
             <div class="px-3 pb-3 pt-0 d-flex justify-content-center">
                 <button id="button-modal-custom" type="submit" class="button-primary"></button>
             </div>
         </div>
-    </div>
+    </centered>
     <script src="matrix.js"></script>
-    <script src="bounce.js"></script>
+    <script src="bounce/bounce.js"></script>
     <script src="vitor.js"></script>
     <script src="app.js"></script>
+    <script src="game.js"></script>
 </body>
 
 </html>
