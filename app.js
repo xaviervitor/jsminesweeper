@@ -1,18 +1,5 @@
-// Enums
-const CellColorMapping = {
-    1: 'steelblue',
-    2: 'seagreen',
-    3: 'mediumvioletred',
-    4: 'purple',
-    5: 'maroon',
-    6: 'teal',
-    7: 'black',
-    8: 'white'
-}
-
 const Difficulties = {
     custom: {
-        // Will be the last configuration played
         rows: 16,
         columns: 30,
         bombs: 99
@@ -34,11 +21,6 @@ const Difficulties = {
     }
 }
 
-const CellTypes = {
-    bomb: -1,
-    space: 0
-}
-
 const MouseButtons = {
     left: 0,
     middle: 1,
@@ -47,17 +29,6 @@ const MouseButtons = {
 
 // Globals
 var fieldScale = 1;
-var GameState = {
-    cellMatrix: 0,
-    numberOfRows: 0,
-    numberOfColumns: 0,
-    numberOfBombs: 0,
-    openCells: 0,
-    timeStarted: 0,
-    timeEnded: 0,
-    flagCounter: 0,
-    over: false
-}
 
 // Element definitions
 const inputTextRows = document.getElementById("inputnumber-rows");
@@ -84,8 +55,9 @@ window.onload = function () {
         resetAnimation(document.getElementById("button-play"));
         startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
-    
+
     document.getElementById("button-restart").addEventListener('click', function () {
+        resetAnimation(this);
         startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
 
@@ -136,8 +108,6 @@ window.onload = function () {
             hideElement(modal);
         });
     });
-
-    
 }
 
 // Functions
@@ -155,20 +125,6 @@ function changeDifficulty(radioButton) {
         showElement(divCustomConfig);
     else
         hideElement(divCustomConfig);
-}
-
-function showEndgameModal(isGameWon) {
-    let title = (isGameWon) ? "Congratulations! &#x1f973;<br/>You Won The Game!" : "You lost it fam... &#x1f614;";
-    let message = `
-        Time elapsed: <span class="pull-right">${msToTime(GameState.timeEnded - GameState.timeStarted)}</span><br/>
-        Flags put: <span class="pull-right">${GameState.flagCounter}</span>
-    `;
-    let buttonText = (isGameWon) ? "Smash it again &#x1f60e;" : "I'll try again I can do it &#x1f624;";
-    let buttonAction = function () {
-        resetAnimation(this);
-        hideElement(modal);
-    }
-    showModal(title, message, buttonText, buttonAction);
 }
 
 function onCellClick(event, i, j) {

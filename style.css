@@ -61,6 +61,10 @@ centered {
 
 /* Elements */
 
+#div-game-container {
+    transition: all .25s ease;
+}
+
 .box {
     border-radius: 5px;
     background-color: white;
@@ -114,7 +118,6 @@ centered {
 .field {
     display: grid;
     cursor: pointer;
-    transition: all .25s ease;
 }
 
 .cell {

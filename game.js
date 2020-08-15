@@ -1,3 +1,32 @@
+const CellColorMapping = {
+    1: 'steelblue',
+    2: 'seagreen',
+    3: 'mediumvioletred',
+    4: 'purple',
+    5: 'maroon',
+    6: 'teal',
+    7: 'black',
+    8: 'white'
+}
+
+const CellTypes = {
+    bomb: -1,
+    space: 0
+}
+
+var GameState = {
+    cellMatrix: 0,
+    numberOfRows: 0,
+    numberOfColumns: 0,
+    numberOfBombs: 0,
+    openCells: 0,
+    timeStarted: 0,
+    timeEnded: 0,
+    flagCounter: 0,
+    counterInterval: 0,
+    over: false
+}
+
 let flagDisplay = document.getElementById("span-flag-display");
 let timeDisplay = document.getElementById("span-time-display");
 
@@ -45,6 +74,7 @@ function startGame(rows, columns, bombs) {
     GameState.openCells = 0;
     GameState.over = false;
     GameState.timeStarted = performance.now();
+    clearInterval(GameState.counterInterval);
     GameState.counterInterval = setTimer(timeDisplay);
     showElement(divFullscreen, 'flex');
     setPlayField(rows, columns, bombs);
@@ -58,6 +88,20 @@ function endGame(isGameWon) {
         showEndgameModal(isGameWon);
         GameState.over = true;
     }
+}
+
+function showEndgameModal(isGameWon) {
+    let title = (isGameWon) ? "Congratulations! &#x1f973;<br/>You Won The Game!" : "You lost it fam... &#x1f614;";
+    let message = `
+        Time elapsed: <span class="pull-right">${msToTime(GameState.timeEnded - GameState.timeStarted)}</span><br/>
+        Flags put: <span class="pull-right">${GameState.flagCounter}</span>
+    `;
+    let buttonText = (isGameWon) ? "Smash it again &#x1f60e;" : "I'll try again I can do it &#x1f624;";
+    let buttonAction = function () {
+        resetAnimation(this);
+        hideElement(modal);
+    }
+    showModal(title, message, buttonText, buttonAction);
 }
 
 function getCellType(i, j) {

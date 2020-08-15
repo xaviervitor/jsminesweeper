@@ -38,18 +38,18 @@ function msToTime(s) {
     function pad(n, z = 2) {
         return ('00' + n).slice(-z);
     }
-  
+
     var ms = s % 1000;
     s = (s - ms) / 1000;
     var secs = s % 60;
     s = (s - secs) / 60;
     var mins = s % 60;
     var hrs = (s - mins) / 60;
-  
+
     return `${(hrs) ? pad(hrs) + ':' : ''}${(mins) ? pad(mins) + ':' : ''}${pad(secs)}.${pad(ms, 3)}`;
 }
 
-function showModal(title, body, buttonText, modalAction = function() {}) {
+function showModal(title, body, buttonText, modalAction = function () { }) {
     document.getElementById("modal-custom-title").innerHTML = title;
     document.getElementById("modal-custom-body").innerHTML = body;
     let modalActionButton = document.getElementById("button-modal-custom");
