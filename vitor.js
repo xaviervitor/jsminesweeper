@@ -16,7 +16,6 @@ function resetAnimation(button) {
 }
 
 function setTimer(element) {
-    element.textContent = '0';
     let start = performance.now();
     let interval = setInterval(function () {
         let delta = performance.now() - start;

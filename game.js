@@ -68,12 +68,17 @@ function openAllCells() {
 
 
 function startGame(rows, columns, bombs) {
+    
     GameState.numberOfRows = rows;
     GameState.numberOfColumns = columns;
     GameState.numberOfBombs = bombs;
     GameState.openCells = 0;
+    GameState.flagCounter = 0;
     GameState.over = false;
     GameState.timeStarted = performance.now();
+    GameState.timeEnded = 0;
+    timeDisplay.textContent = '0';
+    flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
     clearInterval(GameState.counterInterval);
     GameState.counterInterval = setTimer(timeDisplay);
     showElement(divFullscreen, 'flex');
@@ -121,6 +126,7 @@ function flagCell(i, j) {
         thisCell.classList.toggle('fa-flag');
         thisCell.classList.toggle('cell-flag');
         GameState.flagCounter++;
+        flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
     }
 }
 
