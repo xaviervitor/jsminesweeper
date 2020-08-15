@@ -27,8 +27,9 @@ var GameState = {
     over: false
 }
 
-let flagDisplay = document.getElementById("span-flag-display");
-let timeDisplay = document.getElementById("span-time-display");
+const flagDisplay = document.getElementById("span-flag-display");
+const timeDisplay = document.getElementById("span-time-display");
+const emojiDisplay = document.getElementById("emoji-display");
 
 function getAdjacentCells(i, j) {
     let cells = [];
@@ -81,6 +82,7 @@ function startGame(rows, columns, bombs) {
     flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
     clearInterval(GameState.counterInterval);
     GameState.counterInterval = setTimer(timeDisplay);
+    changeButtonEmoji('🥳');
     showElement(divFullscreen, 'flex');
     setPlayField(rows, columns, bombs);
 }
@@ -91,22 +93,27 @@ function endGame(isGameWon) {
         openAllCells();
         clearInterval(GameState.counterInterval);
         showEndgameModal(isGameWon);
+        changeButtonEmoji((isGameWon) ? '😎' : '😤');
         GameState.over = true;
     }
 }
 
 function showEndgameModal(isGameWon) {
-    let title = (isGameWon) ? "Congratulations! &#x1f973;<br/>You Won The Game!" : "You lost it fam... &#x1f614;";
+    let title = (isGameWon) ? "Congratulations! 🥳\nYou Won The Game!" : "You lost it fam... 😔";
     let message = `
         Time elapsed: <span class="pull-right">${msToTime(GameState.timeEnded - GameState.timeStarted)}</span><br/>
         Flags put: <span class="pull-right">${GameState.flagCounter}</span>
     `;
-    let buttonText = (isGameWon) ? "Smash it again &#x1f60e;" : "I'll try again I can do it &#x1f624;";
+    let buttonText = (isGameWon) ? "Smash it again 😎" : "I'll try again I can do it 😤";
     let buttonAction = function () {
         resetAnimation(this);
         hideElement(modal);
     }
-    showModal(title, message, buttonText, buttonAction);
+    showModal((isGameWon) ? true : false, title, message, buttonText, buttonAction);
+}
+
+function changeButtonEmoji(emoji) {
+    emojiDisplay.innerHTML = emoji;
 }
 
 function getCellType(i, j) {
@@ -165,6 +172,18 @@ function getCellByCoordinate(i, j) {
 function setPlayField(rows, columns, bombs) {
     GameState.cellMatrix = Array.matrix(rows, columns, CellTypes.space);
 
+    if (bombs > rows * columns) {
+        showModal(false,
+            'Wait a minute... &#x1f635;', 
+            `The number of bombs is greater than the number of squares in the field, you
+            should correct that.`, 
+            'Oh shit sorry', 
+            function () {
+                hideElement(modal);
+            }
+        );
+        return;
+    } 
     // Generate bombs
     for (let i = 0; i < bombs; i++) {
         let randomRow = getRandom(rows);

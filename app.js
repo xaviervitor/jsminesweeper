@@ -85,16 +85,16 @@ window.onload = function () {
             <div>
                 <input type="checkbox" id="checkbox-flag-display" name="game-options" value="flag-display"
                 ${(spanFlagDisplay.style.getPropertyValue('visibility') == 'visible') ? 'checked' : ''}>
-                <label for="checkbox-bomb-flag">Display bomb flag counter</label>
+                <label for="checkbox-flag-display">Display bomb flag counter</label>
             </div>  
             <div>
                 <input type="checkbox" id="checkbox-time-display" name="game-options" value="time-display"
                 ${(spanTimeDisplay.style.getPropertyValue('visibility') == 'visible') ? 'checked' : ''}>
-                <label for="checkbox-time-elapsed">Display time elapsed</label>
+                <label for="checkbox-time-display">Display time elapsed</label>
             </div>
         `;
         let buttonText = 'Confirm';
-        showModal(title, body, buttonText, function () {
+        showModal(false, title, body, buttonText, function () {
             if (document.getElementById("checkbox-flag-display").checked) {
                 spanFlagDisplay.style.visibility = 'visible';
             } else {
