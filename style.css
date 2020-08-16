@@ -147,7 +147,26 @@ h1.bouncing {
 }
 
 .cell-bomb {
+    background: var(--cell-bg-color) url(./icons/bomb.svg) no-repeat;
+    background-origin: content-box;
     padding: 3px;
+}
+
+.cell-bomb-clicked {
+    z-index: 0;
+    background: var(--cell-bg-color) url(./icons/bomb.svg) no-repeat;
+    background-origin: content-box;
+        padding: 3px;
+    animation: cell-bomb-clicked-animation .5s ease infinite alternate;
+}
+
+@keyframes cell-bomb-clicked-animation {
+    from {
+        box-shadow: 0 0 0 0 transparent;
+    }
+    to {
+        box-shadow: 0 0 0 4px var(--button-outline-color);
+    }
 }
 
 .cell-undiscovered {

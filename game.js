@@ -49,11 +49,11 @@ function openAllCells() {
     for (let i = 0; i < GameState.numberOfRows; i++) {
         for (let j = 0; j < GameState.numberOfColumns; j++) {
             let thisCell = getCellByCoordinate(i, j);
+            if (thisCell.classList.contains('opened')) continue;
             thisCell.classList.remove("fa", "fa-flag", "cell-flag", "cell-undiscovered");
             const cellType = getCellType(i, j);
             if (cellType == CellTypes.bomb) {
-                thisCell.classList.add("cell-bomb");;
-                thisCell.innerHTML = '<img src="icons/bomb.svg">';
+                thisCell.classList.add("cell-bomb");
             } else if (cellType != CellTypes.space) {
                 thisCell.classList.add("cell-number");
                 thisCell.textContent = cellType;
@@ -136,14 +136,13 @@ function openCell(i, j) {
     const thisCell = getCellByCoordinate(i, j);
     thisCell.classList.remove("fa", "fa-flag", "cell-flag", "cell-undiscovered");
     const cellType = getCellType(i, j);
-    if (cellType == CellTypes.bomb) {
-        endGame(false);
-        return;
-    }
     if (!thisCell.classList.contains("opened")) {
         thisCell.classList.add("opened");
         GameState.openCells++;
-        if (cellType == CellTypes.space) {
+        if (cellType == CellTypes.bomb) {
+            thisCell.classList.add("cell-bomb-clicked");
+            endGame(false);
+        } else if (cellType == CellTypes.space) {
             for (cell of getAdjacentCells(i, j)) {
                 openCell(cell.i, cell.j);
             }
