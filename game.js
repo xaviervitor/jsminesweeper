@@ -100,8 +100,8 @@ function endGame(isGameWon) {
 function showEndgameModal(isGameWon) {
     let title = (isGameWon) ? "Congratulations! 🥳You Won The Game!" : "You lost it fam... 😔";
     let message = `
-        Time elapsed: <span class="pull-right">${msToTime(GameState.timeEnded - GameState.timeStarted)}</span><br/>
-        Flags put: <span class="pull-right">${GameState.flagCounter}</span>
+        Time elapsed: <span class="float-right">${msToTime(GameState.timeEnded - GameState.timeStarted)}</span><br/>
+        Flags put: <span class="float-right">${GameState.flagCounter}</span>
     `;
     let buttonText = (isGameWon) ? "Smash it again 😎" : "Let me try again I can do it 😤";
     let buttonAction = function () {
