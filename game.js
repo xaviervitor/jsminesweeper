@@ -69,7 +69,7 @@ function openAllCells() {
 }
 
 
-function startGame(rows, columns, bombs) {
+function startGame(field, rows, columns, bombs) {
     GameState.numberOfRows = rows;
     GameState.numberOfColumns = columns;
     GameState.numberOfBombs = bombs;
@@ -83,7 +83,7 @@ function startGame(rows, columns, bombs) {
     clearInterval(GameState.counterInterval);
     GameState.counterInterval = setTimer(timeDisplay);
     changeButtonEmoji('🥳');
-    setPlayField(rows, columns, bombs);
+    setPlayField(field, rows, columns, bombs);
 }
 
 function endGame(isGameWon) {
@@ -106,7 +106,7 @@ function showEndgameModal(isGameWon) {
     let buttonText = (isGameWon) ? "Smash it again 😎" : "Let me try again I can do it 😤";
     let buttonAction = function () {
         resetAnimation(this);
-        hideElement(modal);
+        hideElement(document.getElementById("modal-custom"));
     }
     showModal((isGameWon) ? true : false, title, message, buttonText, buttonAction);
 }
@@ -164,7 +164,7 @@ function getCellByCoordinate(i, j) {
     return document.getElementById(`cell-${i}-${j}`);
 }
 
-function setPlayField(rows, columns, bombs) {
+function setPlayField(field, rows, columns, bombs) {
     GameState.cellMatrix = Array.matrix(rows, columns, CellTypes.space);
 
     // Generate bombs
@@ -179,7 +179,7 @@ function setPlayField(rows, columns, bombs) {
     }
 
     // Renders field
-    divField.innerHTML = '';
+    field.innerHTML = '';
     for (let i = 0; i < rows; i++) {
         // let divRow = document.createElement('span');
         for (let j = 0; j < columns; j++) {
@@ -187,8 +187,8 @@ function setPlayField(rows, columns, bombs) {
             cell.id = `cell-${i}-${j}`;
             cell.classList.add('cell', 'cell-undiscovered');
             cell.addEventListener('mouseup', function (event) { onCellClick(event, i, j) });
-            divField.appendChild(cell);
+            field.appendChild(cell);
         }
     }
-    divField.style.setProperty('grid-template-columns', `repeat(${columns}, 0fr)`);
+    field.style.setProperty('grid-template-columns', `repeat(${columns}, 0fr)`);
 }

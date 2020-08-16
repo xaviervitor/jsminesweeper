@@ -54,7 +54,7 @@ window.onload = function () {
         event.preventDefault();
         resetAnimation(document.getElementById("button-play"));
         if (inputTextBombs.value <= inputTextRows.value * inputTextColumns.value) {
-            startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
+            startGame(divField, inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
             showElement(divFullscreen, 'flex');
         } else {
             showModal(false, 'Wait a minute... 😵', 
@@ -68,7 +68,7 @@ window.onload = function () {
 
     document.getElementById("button-restart").addEventListener('click', function () {
         resetAnimation(this);
-        startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
+        startGame(divField, inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
 
     document.getElementById("button-close-game").addEventListener('click', function (event) {
@@ -88,10 +88,14 @@ window.onload = function () {
 
     document.getElementById("button-settings").addEventListener('click', function (event) {
         resetAnimation(this);
-        let spanFlagDisplay = document.getElementById("span-flag-display");
-        let spanTimeDisplay = document.getElementById("span-time-display");
-        let title = "Game options";
-        let body = `
+        showSettingsModal();
+    });
+}
+
+function showSettingsModal() {
+    const spanFlagDisplay = document.getElementById("span-flag-display");
+    const spanTimeDisplay = document.getElementById("span-time-display");
+    const modalBody = `
             <div>
                 <input type="checkbox" id="checkbox-flag-display" name="game-options" value="flag-display"
                 ${(spanFlagDisplay.style.getPropertyValue('visibility') == 'visible') ? 'checked' : ''}>
@@ -103,20 +107,12 @@ window.onload = function () {
                 <label for="checkbox-time-display">Display time elapsed</label>
             </div>
         `;
-        let buttonText = 'Confirm';
-        showModal(false, title, body, buttonText, function () {
-            if (document.getElementById("checkbox-flag-display").checked) {
-                spanFlagDisplay.style.visibility = 'visible';
-            } else {
-                spanFlagDisplay.style.visibility = 'hidden';
-            }
-            if (document.getElementById("checkbox-time-display").checked) {
-                spanTimeDisplay.style.visibility = 'visible';
-            } else {
-                spanTimeDisplay.style.visibility = 'hidden';
-            }
-            hideElement(modal);
-        });
+    showModal(false, 'Game options', modalBody, 'Confirm', function () {
+        const isCheckboxFlagChecked = document.getElementById("checkbox-flag-display").checked;
+        const isCheckboxTimeChecked = document.getElementById("checkbox-time-display").checked;
+        spanFlagDisplay.style.visibility = (isCheckboxFlagChecked) ? 'visible' : 'hidden';
+        spanTimeDisplay.style.visibility = (isCheckboxTimeChecked) ? 'visible' : 'hidden';
+        hideElement(modal);
     });
 }
 
