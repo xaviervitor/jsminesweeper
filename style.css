@@ -145,7 +145,7 @@ h1.bouncing {
 .cell-flag {
     background: var(--cell-bg-color) url(./icons/flag.svg) no-repeat;
     background-origin: content-box;
-    padding: 3px;
+    padding: 2px;
 }
 
 .cell-bomb {
