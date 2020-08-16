@@ -21,12 +21,6 @@ const Difficulties = {
     }
 }
 
-const MouseButtons = {
-    left: 0,
-    middle: 1,
-    right: 2
-}
-
 // Globals
 var fieldScale = 1;
 
@@ -45,24 +39,23 @@ window.onload = function () {
         bounce(element, 1, 0.2);
     }
 
-    // Event binders
+    // Deactivates context menu that appears when the player 
+    // right clicks the field 
     divField.addEventListener('contextmenu', function (event) {
         event.preventDefault();
     }, true);
-
+    
     document.getElementById("form-config").addEventListener('submit', function () {
         event.preventDefault();
         resetAnimation(document.getElementById("button-play"));
-        if (inputTextBombs.value <= inputTextRows.value * inputTextColumns.value) {
+        if (inputTextBombs.value > inputTextRows.value * inputTextColumns.value) {
+            const modalBody = `There are more bombs (${inputTextBombs.value}) then squares in the field (${inputTextRows.value * inputTextColumns.value}), maybe you missed something.`;
+            showModal(false, 'Wait a minute... 😵', modalBody, 'Oh shit sorry', function () {
+                hideElement(modal);
+            });
+        } else {
             startGame(divField, inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
             showElement(divFullscreen, 'flex');
-        } else {
-            showModal(false, 'Wait a minute... 😵', 
-                `There are more bombs (${inputTextBombs.value}) then squares in the 
-                field (${inputTextRows.value * inputTextColumns.value}), maybe you missed something.`, 
-                'Oh shit sorry', function () {
-                    hideElement(modal);
-                });
         } 
     });
 
@@ -116,7 +109,6 @@ function showSettingsModal() {
     });
 }
 
-// Functions
 function setFieldScale(newScale) {
     fieldScale = newScale;
     document.getElementById('div-game-container').style.setProperty('transform', `scale(${fieldScale})`);
@@ -131,11 +123,4 @@ function changeDifficulty(radioButton) {
         showElement(divCustomConfig);
     else
         hideElement(divCustomConfig);
-}
-
-function onCellClick(event, i, j) {
-    if (event.button == MouseButtons.left && !getCellByCoordinate(i, j).classList.contains('cell-flag'))
-        openCell(i, j);
-    else if (event.button == MouseButtons.right)
-        flagCell(i, j);
 }

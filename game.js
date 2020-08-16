@@ -27,6 +27,11 @@ var GameState = {
     over: false
 }
 
+const MouseButtons = {
+    left: 0,
+    right: 2
+}
+
 const flagDisplay = document.getElementById("span-flag-display");
 const timeDisplay = document.getElementById("span-time-display");
 const emojiDisplay = document.getElementById("emoji-display");
@@ -68,20 +73,30 @@ function openAllCells() {
     }
 }
 
+function resetGame() {
+    GameState.cellMatrix = 0;
+    GameState.numberOfRows = 0;
+    GameState.numberOfColumns = 0;
+    GameState.numberOfBombs = 0;
+    GameState.openCells = 0;
+    GameState.timeStarted = 0;
+    GameState.timeEnded = 0;
+    GameState.flagCounter = 0;
+    GameState.counterInterval = 0;
+    GameState.over = false;
+}
 
 function startGame(field, rows, columns, bombs) {
+    // Stops timer if it is running
+    clearInterval(GameState.counterInterval);
+    resetGame();
+    GameState.counterInterval = setTimer(timeDisplay);
+    GameState.timeStarted = performance.now();
     GameState.numberOfRows = rows;
     GameState.numberOfColumns = columns;
     GameState.numberOfBombs = bombs;
-    GameState.openCells = 0;
-    GameState.flagCounter = 0;
-    GameState.over = false;
-    GameState.timeStarted = performance.now();
-    GameState.timeEnded = 0;
     timeDisplay.textContent = '0';
-    flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
-    clearInterval(GameState.counterInterval);
-    GameState.counterInterval = setTimer(timeDisplay);
+    flagDisplay.textContent = bombs;
     changeButtonEmoji('🥳');
     setPlayField(field, rows, columns, bombs);
 }
@@ -191,4 +206,11 @@ function setPlayField(field, rows, columns, bombs) {
         }
     }
     field.style.setProperty('grid-template-columns', `repeat(${columns}, 0fr)`);
+}
+
+function onCellClick(event, i, j) {
+    if (event.button == MouseButtons.left && !getCellByCoordinate(i, j).classList.contains('cell-flag'))
+        openCell(i, j);
+    else if (event.button == MouseButtons.right)
+        flagCell(i, j);
 }
