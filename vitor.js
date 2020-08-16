@@ -20,7 +20,7 @@ function setTimer(element) {
     let interval = setInterval(function () {
         let delta = performance.now() - start;
         let seconds = Math.floor(delta / 1000);
-        if (seconds > 999) {
+        if (seconds >= 999) {
             clearInterval(interval);
         }
         element.textContent = seconds;

@@ -53,7 +53,17 @@ window.onload = function () {
     document.getElementById("form-config").addEventListener('submit', function () {
         event.preventDefault();
         resetAnimation(document.getElementById("button-play"));
-        startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
+        if (inputTextBombs.value <= inputTextRows.value * inputTextColumns.value) {
+            startGame(inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
+            showElement(divFullscreen, 'flex');
+        } else {
+            showModal(false, 'Wait a minute... 😵', 
+                `There are more bombs (${inputTextBombs.value}) then squares in the 
+                field (${inputTextRows.value * inputTextColumns.value}), maybe you missed something.`, 
+                'Oh shit sorry', function () {
+                    hideElement(modal);
+                });
+        } 
     });
 
     document.getElementById("button-restart").addEventListener('click', function () {
