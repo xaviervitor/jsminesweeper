@@ -48,18 +48,22 @@ function getAdjacentCells(i, j) {
 function openAllCells() {
     for (let i = 0; i < GameState.numberOfRows; i++) {
         for (let j = 0; j < GameState.numberOfColumns; j++) {
-            let thisCell = getCellByCoordinate(i, j);
-            if (thisCell.classList.contains('opened')) continue;
-            thisCell.classList.remove("cell-flag", "cell-undiscovered");
+            const thisCell = getCellByCoordinate(i, j);
             const cellType = getCellType(i, j);
             if (cellType == CellTypes.bomb) {
+                if (thisCell.classList.contains('cell-flag')) continue;
+                thisCell.classList.remove("cell-undiscovered");
                 thisCell.classList.add("cell-bomb");
-            } else if (cellType != CellTypes.space) {
-                thisCell.classList.add("cell-number");
-                thisCell.textContent = cellType;
-                thisCell.style.setProperty("color", CellColorMapping[cellType]);
+            } else {
+                if (thisCell.classList.contains('cell-flag')) {
+                    thisCell.classList.add("cell-bomb-wrong");
+                } else if (cellType != CellTypes.space) {
+                    thisCell.classList.add("cell-number");
+                    thisCell.textContent = cellType;
+                    thisCell.style.setProperty("color", CellColorMapping[cellType]);
+                }
+                thisCell.classList.remove("cell-flag", "cell-undiscovered");
             }
-            thisCell.classList.add("opened");
         }
     }
 }
@@ -99,7 +103,7 @@ function showEndgameModal(isGameWon) {
         Time elapsed: <span class="pull-right">${msToTime(GameState.timeEnded - GameState.timeStarted)}</span><br/>
         Flags put: <span class="pull-right">${GameState.flagCounter}</span>
     `;
-    let buttonText = (isGameWon) ? "Smash it again 😎" : "I'll try again I can do it 😤";
+    let buttonText = (isGameWon) ? "Smash it again 😎" : "Let me try again I can do it 😤";
     let buttonAction = function () {
         resetAnimation(this);
         hideElement(modal);
