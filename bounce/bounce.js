@@ -1,6 +1,6 @@
 function bounce(element, bounceDurationSeconds, delayIncrement) {
     let delay = 0;
-    let elementText = element.textContent;
+    const elementText = element.textContent;
     element.innerHTML = ''
     for (character of elementText) {
         let charElement = document.createElement('span');

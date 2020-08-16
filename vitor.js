@@ -48,14 +48,13 @@ function msToTime(s) {
     return `${(hrs) ? pad(hrs) + ':' : ''}${(mins) ? pad(mins) + ':' : ''}${pad(secs)}.${pad(ms, 3)}`;
 }
 
-function showModal(bouncing, title, body, buttonText, modalAction = function () { }) {
+function showModal(applyBouncing, title, body, buttonText, modalAction = function () { }) {
     document.getElementById("modal-custom-title").innerHTML = title;
     document.getElementById("modal-custom-body").innerHTML = body;
-    let modalActionButton = document.getElementById("button-modal-custom");
-    modalActionButton.innerHTML = buttonText;
-    modalActionButton.addEventListener('click', modalAction);
+    document.getElementById("button-modal-custom").innerHTML = buttonText;
+    document.getElementById("button-modal-custom").addEventListener('click', modalAction);
     showElement(document.getElementById("modal-custom"), 'flex');
-    if (bouncing) {
+    if (applyBouncing) {
         for (element of document.querySelectorAll('.bouncing')) {
             bounce(element, 1, 0.2);
         }

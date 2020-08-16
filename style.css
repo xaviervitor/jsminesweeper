@@ -89,6 +89,21 @@ h1.bouncing {
     background-color: var(--button-main-color);
 }
 
+.button-primary-click {
+    animation: button-primary-click .5s ease;
+}
+
+@keyframes button-primary-click {
+    0% {
+        background-color: var(--button-pressed-color);
+        box-shadow: 0 0 0 4px var(--button-outline-color);
+    }
+    100% {
+        background-color: var(--button-main-color);
+        box-shadow: 0 0 0 16px transparent;
+    }
+}
+
 .button-primary:hover {
     animation: button-primary-hover .5s ease infinite alternate;
 }
@@ -101,21 +116,6 @@ h1.bouncing {
     to {
         background-color: var(--button-pressed-color);
         box-shadow: 0 0 0 4px var(--button-outline-color);
-    }
-}
-
-.button-primary:focus {
-    animation: button-primary-click .5s ease;
-}
-
-@keyframes button-primary-click {
-    00% {
-        background-color: var(--button-pressed-color);
-        box-shadow: 0 0 0 4px var(--button-outline-color);
-    }
-    100% {
-        background-color: var(--button-main-color);
-        box-shadow: 0 0 0 16px transparent;
     }
 }
 
@@ -143,29 +143,29 @@ h1.bouncing {
 }
 
 .cell-flag {
-    background: var(--cell-bg-color) url(./icons/flag.svg) no-repeat;
+    background: var(--cell-bg-color) url(./icons/game/flag.svg) no-repeat;
     background-origin: content-box;
     padding: 3px;
 }
 
 .cell-bomb {
-    background: var(--cell-bg-color) url(./icons/bomb.svg) no-repeat;
-    background-origin: content-box;
-    padding: 3px;
-}
-
-.cell-bomb-wrong {
-    background: var(--cell-bg-color) url(./icons/bomb-wrong.svg) no-repeat;
+    background: var(--cell-bg-color) url(./icons/game/bomb.svg) no-repeat;
     background-origin: content-box;
     padding: 3px;
 }
 
 .cell-bomb-clicked {
-    z-index: 0;
-    background: var(--cell-bg-color) url(./icons/bomb.svg) no-repeat;
+    background: var(--cell-bg-color) url(./icons/game/bomb.svg) no-repeat;
     background-origin: content-box;
-        padding: 3px;
+    padding: 3px;
+    z-index: 0;
     animation: cell-bomb-clicked-animation .5s ease infinite alternate;
+}
+
+.cell-bomb-wrong {
+    background: var(--cell-bg-color) url(./icons/game/bomb-wrong.svg) no-repeat;
+    background-origin: content-box;
+    padding: 3px;
 }
 
 @keyframes cell-bomb-clicked-animation {
@@ -215,7 +215,7 @@ h1.bouncing {
     transition: all 0.25s ease;
 }
 
-.overlay-button:focus {
+.overlay-button-click {
     animation: overlay-button-click .5s ease;
 }
 
