@@ -50,7 +50,7 @@ function openAllCells() {
         for (let j = 0; j < GameState.numberOfColumns; j++) {
             let thisCell = getCellByCoordinate(i, j);
             if (thisCell.classList.contains('opened')) continue;
-            thisCell.classList.remove("fa", "fa-flag", "cell-flag", "cell-undiscovered");
+            thisCell.classList.remove("cell-flag", "cell-undiscovered");
             const cellType = getCellType(i, j);
             if (cellType == CellTypes.bomb) {
                 thisCell.classList.add("cell-bomb");
@@ -124,8 +124,6 @@ function getCellType(i, j) {
 function flagCell(i, j) {
     let thisCell = getCellByCoordinate(i, j);
     if (!thisCell.classList.contains('opened')) {
-        thisCell.classList.toggle('fa')
-        thisCell.classList.toggle('fa-flag');
         thisCell.classList.toggle('cell-flag');
         GameState.flagCounter += (thisCell.classList.contains('cell-flag')) ? 1 : -1;
         flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
@@ -134,7 +132,7 @@ function flagCell(i, j) {
 
 function openCell(i, j) {
     const thisCell = getCellByCoordinate(i, j);
-    thisCell.classList.remove("fa", "fa-flag", "cell-flag", "cell-undiscovered");
+    thisCell.classList.remove("cell-flag", "cell-undiscovered");
     const cellType = getCellType(i, j);
     if (!thisCell.classList.contains("opened")) {
         thisCell.classList.add("opened");

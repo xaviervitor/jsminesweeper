@@ -138,7 +138,7 @@ function changeDifficulty(radioButton) {
 }
 
 function onCellClick(event, i, j) {
-    if (event.button == MouseButtons.left && !getCellByCoordinate(i, j).classList.contains('fa-flag'))
+    if (event.button == MouseButtons.left && !getCellByCoordinate(i, j).classList.contains('cell-flag'))
         openCell(i, j);
     else if (event.button == MouseButtons.right)
         flagCell(i, j);
