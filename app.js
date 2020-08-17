@@ -44,7 +44,7 @@ window.onload = function () {
     divField.addEventListener('contextmenu', function (event) {
         event.preventDefault();
     }, true);
-    
+
     document.getElementById("form-config").addEventListener('submit', function (event) {
         event.preventDefault();
         animateButtonPrimary(event.submitter);
@@ -56,7 +56,7 @@ window.onload = function () {
         } else {
             startGame(divField, inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
             showElement(divFullscreen, 'flex');
-        } 
+        }
     });
 
     document.getElementById("button-restart").addEventListener('click', function () {
