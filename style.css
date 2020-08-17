@@ -90,7 +90,7 @@ h1.bouncing {
 }
 
 .button-primary-click {
-    animation: button-primary-click .5s ease;
+    animation: button-primary-click .5s ease !important;
 }
 
 @keyframes button-primary-click {
@@ -216,7 +216,7 @@ h1.bouncing {
 }
 
 .overlay-button-click {
-    animation: overlay-button-click .5s ease;
+    animation: overlay-button-click .5s ease !important;
 }
 
 @keyframes overlay-button-click {

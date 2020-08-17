@@ -45,9 +45,9 @@ window.onload = function () {
         event.preventDefault();
     }, true);
     
-    document.getElementById("form-config").addEventListener('submit', function () {
+    document.getElementById("form-config").addEventListener('submit', function (event) {
         event.preventDefault();
-        resetAnimation(document.getElementById("button-play"));
+        animateButtonPrimary(event.submitter);
         if (inputTextBombs.value > inputTextRows.value * inputTextColumns.value) {
             const modalBody = `There are more bombs (${inputTextBombs.value}) then squares in the field (${inputTextRows.value * inputTextColumns.value}), maybe you missed something.`;
             showModal(false, 'Wait a minute... 😵', modalBody, 'Oh shit sorry', function () {
@@ -60,27 +60,27 @@ window.onload = function () {
     });
 
     document.getElementById("button-restart").addEventListener('click', function () {
-        resetAnimation(this);
+        animateButtonPrimary(this);
         startGame(divField, inputTextRows.value, inputTextColumns.value, inputTextBombs.value);
     });
 
     document.getElementById("button-close-game").addEventListener('click', function (event) {
-        resetAnimation(this);
+        animateOverlayButton(this);
         hideElement(divFullscreen);
     });
 
     document.getElementById("button-zoom-in").addEventListener('click', function (event) {
-        resetAnimation(this);
+        animateOverlayButton(this);
         setFieldScale(fieldScale * 1.1);
     });
 
     document.getElementById("button-zoom-out").addEventListener('click', function (event) {
-        resetAnimation(this);
+        animateOverlayButton(this);
         setFieldScale(fieldScale * 0.9);
     });
 
     document.getElementById("button-settings").addEventListener('click', function (event) {
-        resetAnimation(this);
+        animateOverlayButton(this);
         showSettingsModal();
     });
 }

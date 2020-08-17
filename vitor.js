@@ -8,11 +8,19 @@ function hideElement(element) {
     element.classList.add('d-none');
 }
 
-function resetAnimation(button) {
-    button.addEventListener("animationend", function () {
-        // Removes focus so that the next click animation plays
-        button.blur();
+function animateElementClass(element, cssClass) {
+    element.classList.add(cssClass);
+    element.addEventListener("animationend", function () {
+        element.classList.remove(cssClass);
     });
+}
+
+function animateOverlayButton(button) {
+    animateElementClass(button, 'overlay-button-click');
+}
+
+function animateButtonPrimary(button) {
+    animateElementClass(button, 'button-primary-click');
 }
 
 function setTimer(element) {

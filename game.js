@@ -120,7 +120,7 @@ function showEndgameModal(isGameWon) {
     `;
     let buttonText = (isGameWon) ? "Smash it again 😎" : "Let me try again I can do it 😤";
     let buttonAction = function () {
-        resetAnimation(this);
+        animateButtonPrimary(this);
         hideElement(document.getElementById("modal-custom"));
     }
     showModal((isGameWon) ? true : false, title, message, buttonText, buttonAction);
