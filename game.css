@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700');
+
+/* Variables */
+
+:root {
+    --cell-bg-color: rgb(184, 163, 192);
+    --cell-border-light-color: rgb(231, 224, 208);
+    --cell-border-dark-color: rgb(58, 38, 83);
+    --cell-undiscovered-border-light-color: rgb(216, 211, 198);
+    --cell-undiscovered-border-dark-color: rgb(117, 92, 148);
+    --cell-size: 25px;
+}
+
+/* Elements */
+
+.field {
+    display: grid;
+    cursor: pointer;
+}
+
+.cell {
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--cell-size);
+    height: var(--cell-size);
+    background-color: var(--cell-bg-color);
+    border: 1.5px solid;
+    border-color: var(--cell-border-dark-color) transparent transparent var(--cell-border-dark-color);
+}
+
+.cell-number {
+    font-family: 'Work Sans';
+    font-weight: bold;
+    font-size: 15pt;
+}
+
+.cell-flag {
+    background: var(--cell-bg-color) url(./icons/game/flag.svg) no-repeat;
+    background-origin: content-box;
+    padding: 3px;
+}
+
+.cell-bomb {
+    background: var(--cell-bg-color) url(./icons/game/bomb.svg) no-repeat;
+    background-origin: content-box;
+    padding: 3px;
+}
+
+.cell-bomb-clicked {
+    background: var(--cell-bg-color) url(./icons/game/bomb.svg) no-repeat;
+    background-origin: content-box;
+    padding: 3px;
+    z-index: 0;
+    animation: cell-bomb-clicked-animation .5s ease infinite alternate;
+}
+
+.cell-bomb-wrong {
+    background: var(--cell-bg-color) url(./icons/game/bomb-wrong.svg) no-repeat;
+    background-origin: content-box;
+    padding: 3px;
+}
+
+@keyframes cell-bomb-clicked-animation {
+    from {
+        box-shadow: 0 0 0 0 transparent;
+    }
+    to {
+        box-shadow: 0 0 0 4px rgba(110, 85, 141, 0.75);
+    }
+}
+
+.cell-undiscovered {
+    border-width: 3px;
+    border-top-color: var(--cell-undiscovered-border-light-color);
+    border-left-color: var(--cell-undiscovered-border-light-color);
+    border-right-color: var(--cell-undiscovered-border-dark-color);
+    border-bottom-color: var(--cell-undiscovered-border-dark-color);
+}
+
+.cell-undiscovered:active {
+    border-top-color: var(--cell-undiscovered-border-dark-color);
+    border-left-color: var(--cell-undiscovered-border-dark-color);
+    border-right-color: var(--cell-undiscovered-border-light-color);
+    border-bottom-color: var(--cell-undiscovered-border-light-color);
+}
