@@ -1,8 +1,6 @@
 # 🚩 minejsweeper 🚩
 
-<p align="center">
-    <img src="icons/game/flag.svg" height="100" alt="Minejsweeper logo">
-</p>
+<img src="icons/game/flag.svg" height="100" alt="Minejsweeper logo">
 
 this is **minejsweeper**, a minesweeper clone written in Javascript, HTML and CSS — using no graphics library or game engine 🚩.
 
