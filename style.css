@@ -42,6 +42,10 @@ body {
     font-family: 'Nova Round';
 }
 
+::selection {
+    background-color: rgba(117, 92, 148, 0.25);
+}
+
 centered {
     width: 100vw;
     height: 100vh;
