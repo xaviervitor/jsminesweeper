@@ -46,6 +46,7 @@
     background: var(--cell-bg-color) url(./icons/game/bomb.svg) no-repeat;
     background-origin: content-box;
     padding: 3px;
+    pointer-events: none;
 }
 
 .cell-bomb-clicked {
