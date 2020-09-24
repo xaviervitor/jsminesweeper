@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <centered>
+    <div class="centered">
         <div class="p-3 d-flex justify-content-center align-items-center flex-column box">
             <h1 class="bouncing">Minejsweeper!</h1>
             <form id="form-config" class="mb-2 d-flex justify-content-center flex-column">
@@ -62,8 +62,14 @@
                 <button type="submit" class="button-primary align-self-center">Play</button>
             </form>
         </div>
-    </centered>
-    <centered id="div-fullscreen" class="overlay d-none">
+        <div class="anchor-top-right mx-4">
+            <a href="https://github.com/xaviervitor/minejsweeper" class="button-primary github-button p-3">
+                <img src="icons/ui/github-mark.png" class="github-icon" alt="View on GitHub">
+                <span class="align-middle">View on GitHub</span>
+            </a>
+        </div>
+    </div>
+    <div id="div-fullscreen" class="centered overlay d-none">
         <div id="div-game-container" class="d-flex flex-column align-items-center box p-3">
             <div class="d-flex mb-3 w-100 flex-row justify-content-around">
                 <span id="span-flag-display" class="p-2 number-display" style="visibility: visible;">99</span>
@@ -74,7 +80,7 @@
             </div>
             <div id="div-field" class="field"></div>
         </div>
-        <div id="overlay-button-container" class="overlay-button-container">
+        <div id="overlay-button-container" class="anchor-top-right">
             <!-- https://feathericons.com/ -->
             <button id="button-close-game" class="overlay-button">
                 <img src="icons/ui/x.svg" alt="Close" title="Close">
@@ -89,8 +95,8 @@
                 <img src="icons/ui/settings.svg" alt="Settings" title="Settings">
             </button>
         </div>
-    </centered>
-    <centered id="modal-custom" class="overlay d-none">
+    </div>
+    <div id="modal-custom" class="centered overlay d-none">
         <div class="box" style="max-width: 350px;">
             <div class="px-3 pt-3 pb-0">
                 <h2 id="modal-custom-title" class="m-0 bouncing"></h2>
@@ -101,7 +107,7 @@
                 <button id="button-modal-custom" type="submit" class="button-primary"></button>
             </div>
         </div>
-    </centered>
+    </div>
 </body>
 
 </html>

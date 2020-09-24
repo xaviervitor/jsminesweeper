@@ -46,7 +46,17 @@ body {
     background-color: rgba(117, 92, 148, 0.25);
 }
 
-centered {
+/* Elements */
+
+#div-game-container {
+    transition: all .25s ease;
+}
+
+h1.bouncing {
+    user-select: none;
+}
+
+.centered {
     width: 100vw;
     height: 100vh;
     position: absolute;
@@ -57,20 +67,26 @@ centered {
     align-items: center;
 }
 
-/* Elements */
-
-h1.bouncing {
-    user-select: none;
-}
-
-#div-game-container {
-    transition: all .25s ease;
+.anchor-top-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    flex-direction: column;
 }
 
 .box {
     border-radius: 5px;
     background-color: white;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.github-icon {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
 }
 
 .number-display {
@@ -117,18 +133,17 @@ h1.bouncing {
     }
 }
 
-.overlay {
-    background-color: rgba(0, 0, 0, 0.75);
+.github-button, .github-button:hover, .github-button:visited, .github-button:link, .github-button:active {
+    color: white;
+    text-decoration: none;
+    outline: none;
+    padding: 0.5rem;
+    border-top-right-radius: 0px; 
+    border-top-left-radius: 0px;
 }
 
-.overlay-button-container {
-    position: absolute;
-    right: 0;
-    top: 0;
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    flex-direction: column;
+.overlay {
+    background-color: rgba(0, 0, 0, 0.75);
 }
 
 .overlay-button {
