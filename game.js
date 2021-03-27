@@ -156,6 +156,9 @@ function flagCell(i, j) {
 
 function openCell(i, j) {
     const thisCell = getCellByCoordinate(i, j);
+    if (thisCell.classList.contains("cell-flag"))                
+        GameState.flagCounter--;
+        flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
     thisCell.classList.remove("cell-flag", "cell-undiscovered");
     const cellType = getCellType(i, j);
     if (!thisCell.classList.contains("opened")) {
