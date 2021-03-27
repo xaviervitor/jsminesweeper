@@ -236,6 +236,7 @@ window.addEventListener('mouseout', function(){
 });
 
 function onCellMouseUp(event, cell, i, j) {
+    if (GameState.over) return;
     if (isCellMouseDown(i, j)) 
         if (event.button == MouseButtons.left && !cell.classList.contains('cell-flag'))
             if (cell.classList.contains("opened"))
