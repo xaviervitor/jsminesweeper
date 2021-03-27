@@ -24,6 +24,11 @@ var GameState = {
     timeEnded: 0,
     flagCounter: 0,
     counterInterval: 0,
+    mouseDownClickedCell: {
+        i: -1,
+        j: -1
+    },
+    clickedAdjacentCells: [],
     over: false
 }
 
@@ -155,6 +160,7 @@ function openCell(i, j) {
     const cellType = getCellType(i, j);
     if (!thisCell.classList.contains("opened")) {
         thisCell.classList.add("opened");
+        thisCell.classList.remove("cell-undiscovered-active");
         GameState.openCells++;
         if (cellType == CellTypes.bomb) {
             thisCell.classList.add("cell-bomb-clicked");
@@ -196,21 +202,67 @@ function setPlayField(field, rows, columns, bombs) {
     // Renders field
     field.innerHTML = '';
     for (let i = 0; i < rows; i++) {
-        // let divRow = document.createElement('span');
         for (let j = 0; j < columns; j++) {
             let cell = document.createElement('span');
             cell.id = `cell-${i}-${j}`;
             cell.classList.add('cell', 'cell-undiscovered');
-            cell.addEventListener('mouseup', function (event) { onCellClick(event, i, j) });
+            cell.addEventListener('mouseup', function (event) { onCellMouseUp(event, cell, i, j) });
+            cell.addEventListener('mousedown', function (event) { onCellMouseDown(event, cell, i, j) });
             field.appendChild(cell);
         }
     }
     field.style.setProperty('grid-template-columns', `repeat(${columns}, 0fr)`);
 }
 
-function onCellClick(event, i, j) {
-    if (event.button == MouseButtons.left && !getCellByCoordinate(i, j).classList.contains('cell-flag'))
-        openCell(i, j);
-    else if (event.button == MouseButtons.right)
-        flagCell(i, j);
+function onCellMouseDown(event, cell, i, j) {
+    mouseDownAtCell(i, j);
+    if (event.button == MouseButtons.left && cell.classList.contains("opened")) {
+        for (adjacentCellCoordinates of getAdjacentCells(i, j)) {
+            const adjacentCell = getCellByCoordinate(adjacentCellCoordinates.i, adjacentCellCoordinates.j)
+            if (!adjacentCell.classList.contains("opened") && !adjacentCell.classList.contains('cell-flag')) {
+                addActiveColorCells(adjacentCell);
+            }
+        }
+    }
+}
+
+window.addEventListener('mouseout', function(){
+    // Removes "active" colors from cells if the player
+    // moves the cursor out before releasing click
+    removeActiveColorCells();
+});
+
+function onCellMouseUp(event, cell, i, j) {
+    if (isCellMouseDown(i, j)) 
+        if (event.button == MouseButtons.left && !cell.classList.contains('cell-flag'))
+            if (cell.classList.contains("opened"))
+                for (adjacentCellCoordinates of getAdjacentCells(i, j)) {
+                    const adjacentCell = getCellByCoordinate(adjacentCellCoordinates.i, adjacentCellCoordinates.j)
+                    if (!adjacentCell.classList.contains('cell-flag'))
+                        openCell(adjacentCellCoordinates.i, adjacentCellCoordinates.j);
+                }
+            else
+                openCell(i, j);
+        else if (event.button == MouseButtons.right)
+            flagCell(i, j);
+}
+
+function addActiveColorCells(adjacentCell) {
+    GameState.clickedAdjacentCells.push(adjacentCell);
+    adjacentCell.classList.add("cell-undiscovered-active");
+}
+
+function removeActiveColorCells() {
+    for (cell of GameState.clickedAdjacentCells)
+        cell.classList.remove("cell-undiscovered-active");
+    GameState.clickedAdjacentCells = []
+}
+
+function mouseDownAtCell(i, j) {
+    GameState.mouseDownClickedCell.i = i;
+    GameState.mouseDownClickedCell.j = j;
+}
+
+function isCellMouseDown(i, j) {
+    return (i == GameState.mouseDownClickedCell.i && j == GameState.mouseDownClickedCell.j);
 }

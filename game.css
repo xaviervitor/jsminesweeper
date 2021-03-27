@@ -86,3 +86,10 @@
     border-right-color: var(--cell-undiscovered-border-light-color);
     border-bottom-color: var(--cell-undiscovered-border-light-color);
 }
+
+.cell-undiscovered-active {
+    border-top-color: var(--cell-undiscovered-border-dark-color);
+    border-left-color: var(--cell-undiscovered-border-dark-color);
+    border-right-color: var(--cell-undiscovered-border-light-color);
+    border-bottom-color: var(--cell-undiscovered-border-light-color);
+}
