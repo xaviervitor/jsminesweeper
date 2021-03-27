@@ -145,7 +145,7 @@ function getCellType(i, j) {
     return bombCounter;
 }
 
-function flagCell(i, j) {
+function toggleFlagCell(i, j) {
     let thisCell = getCellByCoordinate(i, j);
     if (!thisCell.classList.contains('opened')) {
         thisCell.classList.toggle('cell-flag');
@@ -248,7 +248,7 @@ function onCellMouseUp(event, cell, i, j) {
             else
                 openCell(i, j);
         else if (event.button == MouseButtons.right)
-            flagCell(i, j);
+            toggleFlagCell(i, j);
 }
 
 function addActiveColorCells(adjacentCell) {
