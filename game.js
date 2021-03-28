@@ -218,6 +218,7 @@ function setPlayField(field, rows, columns, bombs) {
 }
 
 function onCellMouseDown(event, cell, i, j) {
+    if (GameState.over) return;
     mouseDownAtCell(i, j);
     if (event.button == MouseButtons.left && cell.classList.contains("opened")) {
         for (adjacentCellCoordinates of getAdjacentCells(i, j)) {
