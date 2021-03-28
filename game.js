@@ -1,14 +1,3 @@
-const CellColorMapping = {
-    1: 'steelblue',
-    2: 'seagreen',
-    3: 'mediumvioletred',
-    4: 'purple',
-    5: 'maroon',
-    6: 'teal',
-    7: 'black',
-    8: 'white'
-}
-
 const CellTypes = {
     bomb: -1,
     space: 0
@@ -70,7 +59,7 @@ function openAllCells() {
                 } else if (cellType != CellTypes.space) {
                     thisCell.classList.add("cell-number");
                     thisCell.textContent = cellType;
-                    thisCell.style.setProperty("color", CellColorMapping[cellType]);
+                    thisCell.style.setProperty("color", `var(--cell-number-color-${cellType})`);
                 }
                 thisCell.classList.remove("cell-flag", "cell-undiscovered");
             }
@@ -175,7 +164,7 @@ function openCell(i, j) {
         } else {
             thisCell.classList.add("cell-number");
             thisCell.textContent = cellType;
-            thisCell.style.setProperty("color", CellColorMapping[cellType]);
+            thisCell.style.setProperty("color", `var(--cell-number-color-${cellType})`);
         }
     }
 

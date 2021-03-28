@@ -3,12 +3,20 @@
 /* Variables */
 
 :root {
-    --cell-bg-color: rgb(184, 163, 192);
-    --cell-border-light-color: rgb(231, 224, 208);
-    --cell-border-dark-color: rgb(58, 38, 83);
-    --cell-undiscovered-border-light-color: rgb(216, 211, 198);
-    --cell-undiscovered-border-dark-color: rgb(117, 92, 148);
+    --cell-color: rgb(212, 200, 223);
+    --cell-undiscovered-color: rgb(184, 163, 192);
+    --cell-clicked-color: rgb(117, 92, 148);
+    --cell-bomb-clicked-animation-color: rgba(110, 85, 141, 0.75);
     --cell-size: 25px;
+
+    --cell-number-color-1: steelblue;
+    --cell-number-color-2: seagreen;
+    --cell-number-color-3: mediumvioletred;
+    --cell-number-color-4: purple;
+    --cell-number-color-5: maroon;
+    --cell-number-color-6: teal;
+    --cell-number-color-7: black;
+    --cell-number-color-8: white;
 }
 
 /* Elements */
@@ -25,9 +33,10 @@
     justify-content: center;
     width: var(--cell-size);
     height: var(--cell-size);
-    background-color: var(--cell-bg-color);
-    border: 1.5px solid;
-    border-color: var(--cell-border-dark-color) transparent transparent var(--cell-border-dark-color);
+    background-color: var(--cell-color);
+    margin: 1px;
+    border: 1.5px solid transparent;
+    border-radius: 2px;
 }
 
 .cell-number {
@@ -37,20 +46,20 @@
 }
 
 .cell-flag {
-    background: var(--cell-bg-color) url(./icons/game/flag.svg) no-repeat;
+    background: var(--cell-color) url(./icons/game/flag.svg) no-repeat;
     background-origin: content-box;
     padding: 3px;
 }
 
 .cell-bomb {
-    background: var(--cell-bg-color) url(./icons/game/bomb.svg) no-repeat;
+    background: var(--cell-color) url(./icons/game/bomb.svg) no-repeat;
     background-origin: content-box;
     padding: 3px;
     pointer-events: none;
 }
 
 .cell-bomb-clicked {
-    background: var(--cell-bg-color) url(./icons/game/bomb.svg) no-repeat;
+    background: var(--cell-color) url(./icons/game/bomb.svg) no-repeat;
     background-origin: content-box;
     padding: 3px;
     z-index: 0;
@@ -58,7 +67,7 @@
 }
 
 .cell-bomb-wrong {
-    background: var(--cell-bg-color) url(./icons/game/bomb-wrong.svg) no-repeat;
+    background: var(--cell-color) url(./icons/game/bomb-wrong.svg) no-repeat;
     background-origin: content-box;
     padding: 3px;
 }
@@ -68,28 +77,18 @@
         box-shadow: 0 0 0 0 transparent;
     }
     to {
-        box-shadow: 0 0 0 4px rgba(110, 85, 141, 0.75);
+        box-shadow: 0 0 0 4px var(--cell-bomb-clicked-animation-color)
     }
 }
 
 .cell-undiscovered {
-    border-width: 3px;
-    border-top-color: var(--cell-undiscovered-border-light-color);
-    border-left-color: var(--cell-undiscovered-border-light-color);
-    border-right-color: var(--cell-undiscovered-border-dark-color);
-    border-bottom-color: var(--cell-undiscovered-border-dark-color);
+    background-color: var(--cell-undiscovered-color);
 }
 
 .cell-undiscovered:active {
-    border-top-color: var(--cell-undiscovered-border-dark-color);
-    border-left-color: var(--cell-undiscovered-border-dark-color);
-    border-right-color: var(--cell-undiscovered-border-light-color);
-    border-bottom-color: var(--cell-undiscovered-border-light-color);
+    background-color: var(--cell-clicked-color);
 }
 
 .cell-undiscovered-active {
-    border-top-color: var(--cell-undiscovered-border-dark-color);
-    border-left-color: var(--cell-undiscovered-border-dark-color);
-    border-right-color: var(--cell-undiscovered-border-light-color);
-    border-bottom-color: var(--cell-undiscovered-border-light-color);
+    background-color: var(--cell-clicked-color);
 }
