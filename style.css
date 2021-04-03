@@ -77,6 +77,12 @@ h1.bouncing {
     flex-direction: column;
 }
 
+@media (max-width: 600px) {
+    .anchor-top-right {
+        flex-direction: row-reverse;
+    }
+}
+
 .box {
     border-radius: 5px;
     background-color: white;
