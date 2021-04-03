@@ -162,9 +162,11 @@ function openCell(i, j) {
                 openCell(cell.i, cell.j);
             }
         } else {
-            thisCell.classList.add("cell-number");
-            thisCell.textContent = cellType;
-            thisCell.style.setProperty("color", `var(--cell-number-color-${cellType})`);
+            if (!thisCell.classList.contains("cell-bomb-wrong")) {
+                thisCell.classList.add("cell-number");
+                thisCell.textContent = cellType;
+                thisCell.style.setProperty("color", `var(--cell-number-color-${cellType})`);
+            }
         }
     }
 
