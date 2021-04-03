@@ -9,12 +9,12 @@
     --cell-bomb-clicked-animation-color: rgba(110, 85, 141, 0.75);
     --cell-size: 25px;
 
-    --cell-number-color-1: steelblue;
-    --cell-number-color-2: seagreen;
-    --cell-number-color-3: mediumvioletred;
-    --cell-number-color-4: purple;
-    --cell-number-color-5: maroon;
-    --cell-number-color-6: teal;
+    --cell-number-color-1: rgb(47, 131, 199);
+    --cell-number-color-2: rgb(49, 177, 104);
+    --cell-number-color-3: rgb(212, 85, 166);
+    --cell-number-color-4: rgb(177, 0, 177);
+    --cell-number-color-5: rgb(192, 0, 42);
+    --cell-number-color-6: rgb(49, 192, 192);
     --cell-number-color-7: black;
     --cell-number-color-8: white;
 }
