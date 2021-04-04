@@ -18,6 +18,7 @@ var GameState = {
         j: -1
     },
     clickedAdjacentCells: [],
+    moves: 0, 
     over: false
 }
 
@@ -77,6 +78,7 @@ function resetGame() {
     GameState.timeEnded = 0;
     GameState.flagCounter = 0;
     GameState.counterInterval = 0;
+    GameState.moves = 0;
     GameState.over = false;
 }
 
@@ -110,7 +112,8 @@ function showEndgameModal(isGameWon) {
     let title = (isGameWon) ? "Congratulations! 🥳You Won The Game!" : "You lost it fam... 😔";
     let message = `
         Time elapsed: <span class="float-right">${msToTime(GameState.timeEnded - GameState.timeStarted)}</span><br/>
-        Flags put: <span class="float-right">${GameState.flagCounter}</span>
+        Flags put: <span class="float-right">${GameState.flagCounter}</span><br/>
+        Moves: <span class="float-right">${GameState.moves}</span>
     `;
     let buttonText = (isGameWon) ? "Smash it again 😎" : "Let me try again I can do it 😤";
     let buttonAction = function () {
@@ -184,13 +187,7 @@ function setPlayField(field, rows, columns, bombs) {
 
     // Generate bombs
     for (let i = 0; i < bombs; i++) {
-        let randomRow = getRandom(rows);
-        let randomColumn = getRandom(columns);
-        while (GameState.cellMatrix[randomRow][randomColumn] == CellTypes.bomb) {
-            randomRow = getRandom(rows);
-            randomColumn = getRandom(columns);
-        }
-        GameState.cellMatrix[randomRow][randomColumn] = CellTypes.bomb;
+        generateBomb();
     }
 
     // Renders field
@@ -206,6 +203,16 @@ function setPlayField(field, rows, columns, bombs) {
         }
     }
     field.style.setProperty('grid-template-columns', `repeat(${columns}, 0fr)`);
+}
+
+function generateBomb() {
+    let randomRow = getRandom(GameState.numberOfRows);
+    let randomColumn = getRandom(GameState.numberOfColumns);
+    while (GameState.cellMatrix[randomRow][randomColumn] == CellTypes.bomb) {
+        randomRow = getRandom(GameState.numberOfRows);
+        randomColumn = getRandom(GameState.numberOfColumns);
+    }
+    GameState.cellMatrix[randomRow][randomColumn] = CellTypes.bomb;
 }
 
 function onCellMouseDown(event, cell, i, j) {
@@ -229,8 +236,12 @@ window.addEventListener('mouseout', function(){
 
 function onCellMouseUp(event, cell, i, j) {
     if (GameState.over) return;
+    if (!GameState.moves)
+        changeBombLocation(i, j);
+
     if (isCellMouseDown(i, j)) 
-        if (event.button == MouseButtons.left && !cell.classList.contains('cell-flag'))
+        if (event.button == MouseButtons.left && !cell.classList.contains('cell-flag')) {
+            GameState.moves++;
             if (cell.classList.contains("opened"))
                 for (adjacentCellCoordinates of getAdjacentCells(i, j)) {
                     const adjacentCell = getCellByCoordinate(adjacentCellCoordinates.i, adjacentCellCoordinates.j)
@@ -239,8 +250,10 @@ function onCellMouseUp(event, cell, i, j) {
                 }
             else
                 openCell(i, j);
-        else if (event.button == MouseButtons.right)
+        } else if (event.button == MouseButtons.right) {
+            GameState.moves++;
             toggleFlagCell(i, j);
+        }
 }
 
 function addActiveColorCells(adjacentCell) {
@@ -261,4 +274,11 @@ function mouseDownAtCell(i, j) {
 
 function isCellMouseDown(i, j) {
     return (i == GameState.mouseDownClickedCell.i && j == GameState.mouseDownClickedCell.j);
+}
+
+function changeBombLocation(i, j) {
+    if (getCellType(i, j) == CellTypes.bomb) {
+        generateBomb();
+        GameState.cellMatrix[i][j] = CellTypes.space;
+    }
 }
