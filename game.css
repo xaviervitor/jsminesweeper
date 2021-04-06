@@ -92,3 +92,7 @@
 .cell-undiscovered-active {
     background-color: var(--cell-clicked-color);
 }
+
+.cell-locked {
+    background-color: var(--cell-undiscovered-color);
+}

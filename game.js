@@ -45,15 +45,21 @@ function getAdjacentCells(i, j) {
     return cells;
 }
 
-function openAllCells() {
+function openAllCells(isGameWon) {
     for (let i = 0; i < GameState.numberOfRows; i++) {
         for (let j = 0; j < GameState.numberOfColumns; j++) {
             const thisCell = getCellByCoordinate(i, j);
             const cellType = getCellType(i, j);
+            thisCell.classList.remove("cell-undiscovered");
             if (cellType == CellTypes.bomb) {
-                if (thisCell.classList.contains('cell-flag')) continue;
-                thisCell.classList.remove("cell-undiscovered");
-                thisCell.classList.add("cell-bomb");
+                if (thisCell.classList.contains('cell-flag')) {
+                    thisCell.classList.add("cell-locked");
+                } else if (isGameWon) {
+                    thisCell.classList.add("cell-flag");
+                    thisCell.classList.add("cell-locked");
+                } else {
+                    thisCell.classList.add("cell-bomb");
+                }
             } else {
                 if (thisCell.classList.contains('cell-flag')) {
                     thisCell.classList.add("cell-bomb-wrong");
@@ -62,7 +68,7 @@ function openAllCells() {
                     thisCell.textContent = cellType;
                     thisCell.style.setProperty("color", `var(--cell-number-color-${cellType})`);
                 }
-                thisCell.classList.remove("cell-flag", "cell-undiscovered");
+                thisCell.classList.remove("cell-flag");
             }
         }
     }
@@ -100,7 +106,7 @@ function startGame(field, rows, columns, bombs) {
 function endGame(isGameWon) {
     GameState.timeEnded = performance.now();
     if (!GameState.over) {
-        openAllCells();
+        openAllCells(isGameWon);
         clearInterval(GameState.counterInterval);
         showEndgameModal(isGameWon);
         changeButtonEmoji((isGameWon) ? '😎' : '😤');
