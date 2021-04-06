@@ -31,17 +31,18 @@ const flagDisplay = document.getElementById("span-flag-display");
 const timeDisplay = document.getElementById("span-time-display");
 const emojiDisplay = document.getElementById("emoji-display");
 
-function getAdjacentCells(i, j) {
-    let cells = [];
-    try { if (GameState.cellMatrix[i - 1][j - 1] != undefined) cells.push({ i: i - 1, j: j - 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i - 1][j + 0] != undefined) cells.push({ i: i - 1, j: j + 0 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i - 1][j + 1] != undefined) cells.push({ i: i - 1, j: j + 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 0][j - 1] != undefined) cells.push({ i: i + 0, j: j - 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 0][j + 0] != undefined) cells.push({ i: i + 0, j: j + 0 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 0][j + 1] != undefined) cells.push({ i: i + 0, j: j + 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 1][j - 1] != undefined) cells.push({ i: i + 1, j: j - 1 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 1][j + 0] != undefined) cells.push({ i: i + 1, j: j + 0 }); } catch (TypeError) { }
-    try { if (GameState.cellMatrix[i + 1][j + 1] != undefined) cells.push({ i: i + 1, j: j + 1 }); } catch (TypeError) { }
+function getAdjacentCells(x, y) {
+    const cells = [];
+    for (let i of [-1, 0, 1]) {
+        for (let j of [-1, 0, 1]) {
+            const a = x + i;
+            const b = y + j;
+
+            if (a <= GameState.numberOfRows - 1 && b <= GameState.numberOfColumns - 1 && a >= 0 && b >= 0) {
+                cells.push({i: a, j: b});
+            }
+        }
+    }
     return cells;
 }
 
