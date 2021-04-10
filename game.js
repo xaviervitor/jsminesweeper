@@ -157,7 +157,7 @@ function openCell(i, j) {
     const thisCell = getCellByCoordinate(i, j);
     if (thisCell.classList.contains("cell-flag"))                
         GameState.flagCounter--;
-        flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
+    flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
     thisCell.classList.remove("cell-flag", "cell-undiscovered");
     const cellType = getCellType(i, j);
     if (!thisCell.classList.contains("opened")) {
@@ -243,7 +243,7 @@ window.addEventListener('mouseout', function(){
 
 function onCellMouseUp(event, cell, i, j) {
     if (GameState.over) return;
-    if (!GameState.moves)
+    if (!GameState.moves && GameState.numberOfRows * GameState.numberOfColumns == GameState.Bombs)
         changeBombLocation(i, j);
 
     if (isCellMouseDown(i, j)) 
