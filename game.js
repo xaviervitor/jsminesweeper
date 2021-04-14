@@ -4,7 +4,8 @@ const CellTypes = {
 }
 
 var GameState = {
-    cellMatrix: 0,
+    cellStack: [],
+    bombsSet: new Set(),
     numberOfRows: 0,
     numberOfColumns: 0,
     numberOfBombs: 0,
@@ -76,7 +77,7 @@ function openAllCells(isGameWon) {
 }
 
 function resetGame() {
-    GameState.cellMatrix = 0;
+    GameState.bombsSet = new Set();
     GameState.numberOfRows = 0;
     GameState.numberOfColumns = 0;
     GameState.numberOfBombs = 0;
@@ -134,11 +135,15 @@ function changeButtonEmoji(emoji) {
     emojiDisplay.innerHTML = emoji;
 }
 
+function isThereABombAt(i, j) {
+    return GameState.bombsSet.has(`${i}:${j}`);
+}
+
 function getCellType(i, j) {
-    if (GameState.cellMatrix[i][j] == CellTypes.bomb) return CellTypes.bomb;
+    if (isThereABombAt(i, j)) return CellTypes.bomb;
     let bombCounter = 0;
     for (cell of getAdjacentCells(i, j)) {
-        if (GameState.cellMatrix[cell.i][cell.j] == CellTypes.bomb)
+        if (isThereABombAt(cell.i, cell.j))
             bombCounter++;
     }
     return bombCounter;
@@ -153,35 +158,42 @@ function toggleFlagCell(i, j) {
     }
 }
 
-function openCell(i, j) {
-    const thisCell = getCellByCoordinate(i, j);
-    if (thisCell.classList.contains("cell-flag"))                
-        GameState.flagCounter--;
-    flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
-    thisCell.classList.remove("cell-flag", "cell-undiscovered");
-    const cellType = getCellType(i, j);
-    if (!thisCell.classList.contains("opened")) {
-        thisCell.classList.add("opened");
-        thisCell.classList.remove("cell-undiscovered-active");
-        GameState.openCells++;
-        if (cellType == CellTypes.bomb) {
-            thisCell.classList.add("cell-bomb-clicked");
-            endGame(false);
-        } else if (cellType == CellTypes.space) {
-            for (cell of getAdjacentCells(i, j)) {
-                openCell(cell.i, cell.j);
-            }
-        } else {
-            if (!thisCell.classList.contains("cell-bomb-wrong")) {
-                thisCell.classList.add("cell-number");
-                thisCell.textContent = cellType;
-                thisCell.style.setProperty("color", `var(--cell-number-color-${cellType})`);
-            }
+function clickCell(i, j) {
+    openCell(i, j);
+    while (GameState.cellStack.length) {
+        const cellInfo = GameState.cellStack.pop();
+        const adjacentCells = getAdjacentCells(cellInfo.i, cellInfo.j);
+        for (cell of adjacentCells) {
+            openCell(cell.i, cell.j);
         }
     }
-
+    GameState.cellStack = [];
     if (GameState.openCells == GameState.numberOfRows * GameState.numberOfColumns - GameState.numberOfBombs) {
         endGame(true);
+    }
+}
+
+function openCell(i, j) {
+    const thisCell = getCellByCoordinate(i, j);
+    if (thisCell.classList.contains("opened")) return;
+    GameState.openCells++;
+    thisCell.classList.add("opened");
+    thisCell.classList.remove("cell-flag", "cell-undiscovered", "cell-undiscovered-active");
+    if (thisCell.classList.contains("cell-flag")) {
+        GameState.flagCounter--;
+        flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
+    }
+    const cellType = getCellType(i, j);
+    if (cellType == CellTypes.bomb) {
+        thisCell.classList.add("cell-bomb-clicked");
+        GameState.cellStack = [];
+        endGame(false);
+    } else if (cellType == CellTypes.space) {
+        GameState.cellStack.push({i: i, j: j});
+    } else if (!thisCell.classList.contains("cell-bomb-wrong")) {
+        thisCell.classList.add("cell-number");
+        thisCell.textContent = cellType;
+        thisCell.style.setProperty("color", `var(--cell-number-color-${cellType})`);
     }
 }
 
@@ -190,8 +202,6 @@ function getCellByCoordinate(i, j) {
 }
 
 function setPlayField(field, rows, columns, bombs) {
-    GameState.cellMatrix = Array.matrix(rows, columns, CellTypes.space);
-
     // Generate bombs
     for (let i = 0; i < bombs; i++) {
         generateBomb();
@@ -215,11 +225,12 @@ function setPlayField(field, rows, columns, bombs) {
 function generateBomb() {
     let randomRow = getRandom(GameState.numberOfRows);
     let randomColumn = getRandom(GameState.numberOfColumns);
-    while (GameState.cellMatrix[randomRow][randomColumn] == CellTypes.bomb) {
+    while (isThereABombAt(randomRow, randomColumn)) {
         randomRow = getRandom(GameState.numberOfRows);
         randomColumn = getRandom(GameState.numberOfColumns);
     }
-    GameState.cellMatrix[randomRow][randomColumn] = CellTypes.bomb;
+
+    GameState.bombsSet.add(`${randomRow}:${randomColumn}`);
 }
 
 function onCellMouseDown(event, cell, i, j) {
@@ -243,7 +254,7 @@ window.addEventListener('mouseout', function(){
 
 function onCellMouseUp(event, cell, i, j) {
     if (GameState.over) return;
-    if (!GameState.moves && GameState.numberOfRows * GameState.numberOfColumns == GameState.Bombs)
+    if (!GameState.moves && GameState.numberOfRows * GameState.numberOfColumns != GameState.numberOfBombs)
         changeBombLocation(i, j);
 
     if (isCellMouseDown(i, j)) 
@@ -253,10 +264,10 @@ function onCellMouseUp(event, cell, i, j) {
                 for (adjacentCellCoordinates of getAdjacentCells(i, j)) {
                     const adjacentCell = getCellByCoordinate(adjacentCellCoordinates.i, adjacentCellCoordinates.j)
                     if (!adjacentCell.classList.contains('cell-flag'))
-                        openCell(adjacentCellCoordinates.i, adjacentCellCoordinates.j);
+                        clickCell(adjacentCellCoordinates.i, adjacentCellCoordinates.j);
                 }
             else
-                openCell(i, j);
+                clickCell(i, j);
         } else if (event.button == MouseButtons.right) {
             GameState.moves++;
             toggleFlagCell(i, j);
@@ -286,6 +297,6 @@ function isCellMouseDown(i, j) {
 function changeBombLocation(i, j) {
     if (getCellType(i, j) == CellTypes.bomb) {
         generateBomb();
-        GameState.cellMatrix[i][j] = CellTypes.space;
+        GameState.bombsSet.delete(`${i}:${j}`);
     }
 }
