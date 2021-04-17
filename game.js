@@ -1,8 +1,3 @@
-const CellTypes = {
-    bomb: -1,
-    space: 0
-}
-
 var GameState = {
     cellStack: [],
     bombsSet: new Set(),
@@ -51,9 +46,9 @@ function openAllCells(isGameWon) {
     for (let i = 0; i < GameState.numberOfRows; i++) {
         for (let j = 0; j < GameState.numberOfColumns; j++) {
             const thisCell = getCellByCoordinate(i, j);
-            const cellType = getCellType(i, j);
+            const bombCount = getAdjacentBombCount(i, j);
             thisCell.classList.remove("cell-undiscovered");
-            if (cellType == CellTypes.bomb) {
+            if (bombCount == -1) {
                 if (thisCell.classList.contains('cell-flag')) {
                     thisCell.classList.add("cell-locked");
                 } else if (isGameWon) {
@@ -65,10 +60,10 @@ function openAllCells(isGameWon) {
             } else {
                 if (thisCell.classList.contains('cell-flag')) {
                     thisCell.classList.add("cell-bomb-wrong");
-                } else if (cellType != CellTypes.space) {
+                } else if (bombCount != 0) {
                     thisCell.classList.add("cell-number");
-                    thisCell.textContent = cellType;
-                    thisCell.style.setProperty("color", `var(--cell-number-color-${cellType})`);
+                    thisCell.textContent = bombCount;
+                    thisCell.style.setProperty("color", `var(--cell-number-color-${bombCount})`);
                 }
                 thisCell.classList.remove("cell-flag");
             }
@@ -139,8 +134,8 @@ function isThereABombAt(i, j) {
     return GameState.bombsSet.has(`${i}:${j}`);
 }
 
-function getCellType(i, j) {
-    if (isThereABombAt(i, j)) return CellTypes.bomb;
+function getAdjacentBombCount(i, j) {
+    if (isThereABombAt(i, j)) return -1;
     let bombCounter = 0;
     for (cell of getAdjacentCells(i, j)) {
         if (isThereABombAt(cell.i, cell.j))
@@ -183,17 +178,17 @@ function openCell(i, j) {
         GameState.flagCounter--;
         flagDisplay.textContent = GameState.numberOfBombs - GameState.flagCounter;
     }
-    const cellType = getCellType(i, j);
-    if (cellType == CellTypes.bomb) {
+    const bombCount = getAdjacentBombCount(i, j);
+    if (bombCount == -1) {
         thisCell.classList.add("cell-bomb-clicked");
         GameState.cellStack = [];
         endGame(false);
-    } else if (cellType == CellTypes.space) {
+    } else if (bombCount == 0) {
         GameState.cellStack.push({i: i, j: j});
     } else if (!thisCell.classList.contains("cell-bomb-wrong")) {
         thisCell.classList.add("cell-number");
-        thisCell.textContent = cellType;
-        thisCell.style.setProperty("color", `var(--cell-number-color-${cellType})`);
+        thisCell.textContent = bombCount;
+        thisCell.style.setProperty("color", `var(--cell-number-color-${bombCount})`);
     }
 }
 
@@ -295,7 +290,7 @@ function isCellMouseDown(i, j) {
 }
 
 function changeBombLocation(i, j) {
-    if (getCellType(i, j) == CellTypes.bomb) {
+    if (isThereABombAt(i, j)) {
         generateBomb();
         GameState.bombsSet.delete(`${i}:${j}`);
     }
